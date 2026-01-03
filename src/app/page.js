@@ -85,7 +85,7 @@ export default function Home() {
               className="mix-blend-multiply"
             />
           </div>
-          <a href="#Home">The Real World</a>
+          <a href="#Home" className="scroll-mt-[111px">The Real World</a>
         </div>
         <div>
           <ul className="flex gap-3">
