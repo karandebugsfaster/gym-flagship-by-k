@@ -1,65 +1,183 @@
+"use client";
 import Image from "next/image";
-
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 export default function Home() {
+  const menus = [
+    "ABOUT",
+    "SERVICES",
+    "PRICING",
+    "TESTIMONIALS",
+    "FAQ",
+    "CONTACT",
+  ];
+  const [activeSection, setActiveSection] = useState("Home");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    const homeSection = document.getElementById("Home");
+    if (homeSection) {
+      const topOffset = 37 + 74; // height of top bar + height of navbar
+      window.scrollTo({
+        top: homeSection.offsetTop - topOffset,
+        behavior: "auto",
+      });
+    }
+
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+    sections.forEach((section) => {
+      observer.observe(section);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [mounted]);
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+    <>
+      <Image
+        src="/images/img-1-gym.avif"
+        alt="Gym Image"
+        fill
+        priority
+        quality={90}
+        className="object-cover object-[80%_50%] -z-10"
+      />
+
+      {/* ✅ ADDED: Overlay for readability */}
+      <div className="absolute inset-0 bg-black/20" />
+
+      <div className="hidden md:flex h-[37px] min-w-full items-center justify-center bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_55%,rgba(236,79,9,1)_100%)] z-20">
+        <ul className="text-white flex justify-between items-center font-medium text-sm w-full">
+          <li className="md:text-xs lg:pl-28 lg:text-sm">
+            CONTACT@HYPERFIT.COM &nbsp; / &nbsp; (123) 456 - 7890
+          </li>
+          <li className="md:text-xs lg:pr-28 lg:text-sm">
+            MONDAY - FRIDAY [ 7 AM - 10 PM ] &nbsp; &nbsp; / &nbsp; &nbsp;
+            SATURDAY - SUNDAY [ 7 AM - 9 AM ]
+          </li>
+        </ul>
+      </div>
+
+      <div className="sticky top-0 z-50 h-[74px] flex items-center justify-around">
+        <div className="font-bold text-2xl text-white flex items-center gap-2">
+          <div>
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/images/real-world-2.png"
+              alt="Real World Logo"
+              width={50}
+              height={50}
+              className="mix-blend-multiply"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+          <a href="#Home">The Real World</a>
         </div>
-      </main>
-    </div>
+        <div>
+          <ul className="flex gap-3">
+            {menus.map((menu, i) => {
+              return (
+                <motion.li
+                  whileHover={{ scale: 1.1 }}
+                  animate={{ scale: activeSection === menu ? 1.1 : 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  key={i}
+                >
+                  {mounted && (
+                    <a
+                      href={`#${menu}`}
+                      className={`rounded-full p-3 px-5 font-bold transition hover:bg-orange-500 hover:text-white
+                        ${
+                          activeSection === menu
+                            ? "bg-orange-500 text-white"
+                            : "bg-[#a5a5a5] text-black"
+                        }`}
+                    >
+                      {menu}
+                    </a>
+                  )}
+                </motion.li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className="font-bold text-2xl text-white">Log In</div>
+      </div>
+      <div>
+        <section
+          id="Home"
+          className="h-screen flex flex-col items-start justify-center gap-4 p-28"
+        >
+          <h1
+            className="
+            text-7xl 
+            font-bold 
+            bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_55%,rgba(236,79,9,1)_100%)]
+            bg-clip-text 
+            text-transparent"
+          >
+            LESS TALK. <br /> MORE WORK.
+          </h1>
+
+          <h2 className="text-white text-xl">
+            Results that last — <br />
+            built through consistency, clarity, and care.
+          </h2>
+        </section>
+      </div>
+      <section
+        id="ABOUT"
+        className="h-screen flex items-center justify-center bg-blue-400"
+      >
+        <h1 className="text-5xl font-bold">About Section</h1>
+      </section>
+      <section
+        id="SERVICES"
+        className="h-screen flex items-center justify-center bg-green-400"
+      >
+        <h1 className="text-5xl font-bold">Services Section</h1>
+      </section>
+      <section
+        id="PRICING"
+        className="h-screen flex items-center justify-center bg-yellow-400"
+      >
+        <h1 className="text-5xl font-bold">Pricing Section</h1>
+      </section>
+      <div>
+        <section
+          id="TESTIMONIALS"
+          className="h-screen flex items-center justify-center bg-blue-400"
+        >
+          <h1 className="text-5xl font-bold">Testimonials Section</h1>
+        </section>
+        <section
+          id="FAQ"
+          className="h-screen flex items-center justify-center bg-green-400"
+        >
+          <h1 className="text-5xl font-bold">FAQ Section</h1>
+        </section>
+        <section
+          id="CONTACT"
+          className="h-screen flex items-center justify-center bg-yellow-400"
+        >
+          <h1 className="text-5xl font-bold">Contact Section</h1>
+        </section>
+      </div>
+      {/* </div> */}
+    </>
   );
 }
