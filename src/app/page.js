@@ -11,6 +11,7 @@ export default function Home() {
     "FAQ",
     "CONTACT",
   ];
+
   const [activeSection, setActiveSection] = useState("Home");
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -66,6 +67,8 @@ export default function Home() {
   }, [mounted]);
   return (
     <>
+    <div className=" overflow-hidden z-10">
+
       <Image
         src="/images/img-1-gym.avif"
         alt="Gym Image"
@@ -78,10 +81,11 @@ export default function Home() {
         sm:object-[70%_50%]
         lg:object-[80%_50%] 
         -z-10"
-      />
+        />
 
       {/* ✅ ADDED: Overlay for readability */}
       <div className="absolute inset-0 bg-black/20" />
+        </div>
 
       <div className="hidden md:flex h-[37px] min-w-full items-center justify-center bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_55%,rgba(236,79,9,1)_100%)] z-20">
         <ul className="text-white flex justify-between items-center font-medium text-sm w-full">
@@ -245,25 +249,32 @@ export default function Home() {
       <div>
         <section
           id="Home"
-          className="h-screen flex flex-col items-start justify-end-safe lg:justify-center pb-[189px] md:pb-[250px] lg:pb-0 gap-4 sm:gap-5 md:gap-6 p-6 sm:p-10 md:p-16 lg:p-28 scroll-mt-[111px]"
+          className="relative h-[calc(100vh-111px)] overflow-hidden"
+          // className="h-screen flex flex-col items-start justify-end-safe lg:justify-center pb-[189px] md:pb-[250px] lg:pb-0 gap-4 sm:gap-5 md:gap-6 p-6 sm:p-10 md:p-16 lg:p-28 scroll-mt-[111px]"
         >
-          <h1
-            className="
+          <div className="h-screen flex flex-col items-start justify-end-safe lg:justify-center pb-[189px] md:pb-[250px] lg:pb-0 gap-4 sm:gap-5 md:gap-6 p-6 sm:p-10 md:p-16 lg:p-28 scroll-mt-[111px]" >
+            <h1
+              className="
             text-4xl sm:text-5xl md:text-6xl lg:text-7xl 
             font-bold 
             bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_55%,rgba(236,79,9,1)_100%)]
             bg-clip-text 
             text-transparent
             "
-          >
-            LESS TALK. <br /> MORE WORK.
-          </h1>
+            >
+              LESS TALK. <br /> MORE WORK.
+            </h1>
 
-          <h2 className="text-white text-xl">
-            Results that last — <br />
-            built through consistency, clarity, and care.
-          </h2>
+            <h2 className="text-white text-xl">
+              Results that last — <br />
+              built through consistency, clarity, and care.
+            </h2>
+          </div>
+          {/* <div className="text-white bg-black h-full w-full relative pb-[100px]">
+            hii
+          </div> */}
         </section>
+        {/* <div className="w-full bg-black text-white">hii</div> */}
       </div>
       <section
         id="ABOUT"
