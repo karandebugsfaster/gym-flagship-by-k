@@ -249,10 +249,10 @@ export default function Home() {
       <div>
         <section
           id="Home"
-          className="relative h-[calc(100vh-111px)] overflow-hidden"
+          className="relative h-[calc(100vh-76px)] md:h-[calc(100vh-111px)] lg:h-[calc(100vh-111px)] overflow-hidden"
           // className="h-screen flex flex-col items-start justify-end-safe lg:justify-center pb-[189px] md:pb-[250px] lg:pb-0 gap-4 sm:gap-5 md:gap-6 p-6 sm:p-10 md:p-16 lg:p-28 scroll-mt-[111px]"
         >
-          <div className="h-screen flex flex-col items-start justify-end-safe lg:justify-center pb-[189px] md:pb-[250px] lg:pb-0 gap-4 sm:gap-5 md:gap-6 p-6 sm:p-10 md:p-16 lg:p-28 scroll-mt-[111px]" >
+          <div className="h-full flex flex-col items-start justify-end-safe lg:justify-center pb-[189px] md:pb-[250px] lg:pb-0 gap-4 sm:gap-5 md:gap-6 p-6 sm:p-10 md:p-16 lg:p-28 scroll-mt-[111px]" >
             <h1
               className="
             text-4xl sm:text-5xl md:text-6xl lg:text-7xl 
