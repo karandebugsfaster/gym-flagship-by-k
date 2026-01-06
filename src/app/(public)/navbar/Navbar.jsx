@@ -3,6 +3,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Navbar = () => {
   const menus = ["ABOUT", "SERVICES", "PRICING", "FAQ", "CONTACT"];
@@ -10,18 +12,19 @@ const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (!mounted) return;
 
     const handleScroll = () => {
-      setScrolled(window.scrollY > 80);
+      setScrolled(window.scrollY > 30);
     };
     window.addEventListener("scroll", handleScroll);
     handleScroll();
 
     return () => {
-    window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [mounted]);
 
@@ -49,7 +52,7 @@ const Navbar = () => {
           }
         });
       },
-      { threshold: 0.6 }
+      { threshold: 0.5 }
     );
     sections.forEach((section) => {
       observer.observe(section);
@@ -112,41 +115,47 @@ const Navbar = () => {
             })}
           </ul>
         </div>
-        <div className="flex items-center justify-center gap-1 md:gap-4 lg:gap-1">
-          <div className="relative z-10">
-            <Image
-              src="/images/avatar-loop.gif"
-              alt="Avatar"
-              width={40}
-              height={40}
-              className="mix-blend-multiply"
-            />
-          </div>
-          <div className="relative z-10 lg:hidden">
-            <button
-              className="cursor-pointer"
-              onClick={() => {
-                setToggleMenu(!toggleMenu);
-              }}
-            >
+        
+          <div className="flex items-center justify-center gap-1 md:gap-4 lg:gap-1">
+            <div className="relative z-10">
+              <Link href="/sign-up">
               <Image
-                src="/images/hamburger-white.svg"
+                src="/images/avatar-loop.gif"
                 alt="Avatar"
                 width={40}
                 height={40}
-                className="mix-blend-multiply "
+                className="mix-blend-multiply"
               />
-            </button>
+              </Link>
+            </div>
+            <div className="relative z-10 lg:hidden">
+              <button
+                className="cursor-pointer"
+                onClick={() => {
+                  setToggleMenu(!toggleMenu);
+                }}
+              >
+                <Image
+                  src="/images/hamburger-white.svg"
+                  alt="Avatar"
+                  width={40}
+                  height={40}
+                  className="mix-blend-multiply"
+                />
+              </button>
+            </div>
+            <Link href="/sign-up">
+            <motion.div
+              className="font-bold text-l hidden lg:flex rounded-full p-3 px-5 bg-[#a5a5a5] text-black hover:bg-orange-500 hover:text-white"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              SIGN-UP
+            </motion.div>
+            </Link>
           </div>
-          <motion.div
-            className="font-bold text-l hidden lg:flex rounded-full p-3 px-5 bg-[#a5a5a5] text-black hover:bg-orange-500 hover:text-white"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            SIGN-UP
-          </motion.div>
-        </div>
+        
       </div>
       {/* BACKDROP */}
       {toggleMenu && (
@@ -201,7 +210,6 @@ const Navbar = () => {
           })}
         </ul>
       </motion.div>
-      
     </>
   );
 };
