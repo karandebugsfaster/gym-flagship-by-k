@@ -30,7 +30,7 @@
         </div>
 
         {/* 45% */}
-        <div className="bg-green-400 overflow-hidden ">
+        <div className="overflow-hidden ">
         <Images/>
         </div>
       </main>

@@ -63,7 +63,7 @@ export default function Home() {
       <section id="SERVICES" className="min-h-screen bg-blue-400">
         <Services />
       </section>
-      <section id="PRICING" className="min-h-screen bg-yellow-400">
+      <section id="PRICING" className="min-h-screen">
         <Pricing />
       </section>
       <section
@@ -72,7 +72,7 @@ export default function Home() {
       >
         <Faq />
       </section>
-      <section id="CONTACT" className="min-h-screen bg-yellow-400">
+      <section id="CONTACT" className="min-h-screen">
         <Contact />
       </section>
     </>

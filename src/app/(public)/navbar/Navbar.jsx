@@ -36,7 +36,8 @@ const Navbar = () => {
     if (!mounted) return;
     const homeSection = document.getElementById("Home");
     if (homeSection) {
-      const topOffset = 37 + 74; // height of top bar + height of navbar
+      const topOffset = 37 + 74;
+
       window.scrollTo({
         top: homeSection.offsetTop - topOffset,
         behavior: "auto",
@@ -62,6 +63,18 @@ const Navbar = () => {
       observer.disconnect();
     };
   }, [mounted]);
+
+  const handleMobileNavClick = (menu) => {
+    setToggleMenu(false); // close menu
+    const section = document.getElementById(menu);
+    if (!section) return;
+
+    const topOffset = 37 + 74; // top bar + navbar
+    window.scrollTo({
+      top: section.offsetTop - topOffset,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <>
@@ -115,10 +128,10 @@ const Navbar = () => {
             })}
           </ul>
         </div>
-        
-          <div className="flex items-center justify-center gap-1 md:gap-4 lg:gap-1">
-            <div className="relative z-10">
-              <Link href="/sign-up">
+
+        <div className="flex items-center justify-center gap-1 md:gap-4 lg:gap-1">
+          <div className="relative z-10">
+            <Link href="/sign-up">
               <Image
                 src="/images/avatar-loop.gif"
                 alt="Avatar"
@@ -126,25 +139,25 @@ const Navbar = () => {
                 height={40}
                 className="mix-blend-multiply"
               />
-              </Link>
-            </div>
-            <div className="relative z-10 lg:hidden">
-              <button
-                className="cursor-pointer"
-                onClick={() => {
-                  setToggleMenu(!toggleMenu);
-                }}
-              >
-                <Image
-                  src="/images/hamburger-white.svg"
-                  alt="Avatar"
-                  width={40}
-                  height={40}
-                  className="mix-blend-multiply"
-                />
-              </button>
-            </div>
-            <Link href="/sign-up">
+            </Link>
+          </div>
+          <div className="relative z-10 lg:hidden">
+            <button
+              className="cursor-pointer"
+              onClick={() => {
+                setToggleMenu(!toggleMenu);
+              }}
+            >
+              <Image
+                src="/images/hamburger-white.svg"
+                alt="Avatar"
+                width={40}
+                height={40}
+                className="mix-blend-multiply"
+              />
+            </button>
+          </div>
+          <Link href="/sign-up">
             <motion.div
               className="font-bold text-l hidden lg:flex rounded-full p-3 px-5 bg-[#a5a5a5] text-black hover:bg-orange-500 hover:text-white"
               whileHover={{ scale: 1.1 }}
@@ -153,9 +166,8 @@ const Navbar = () => {
             >
               SIGN-UP
             </motion.div>
-            </Link>
-          </div>
-        
+          </Link>
+        </div>
       </div>
       {/* BACKDROP */}
       {toggleMenu && (
@@ -170,7 +182,7 @@ const Navbar = () => {
         animate={{ x: toggleMenu ? "0%" : "100%" }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="
-    fixed top-0 right-0 h-screen w-[70%] sm:w-[50%]
+    fixed top-0 right-0 min-h-screen w-[70%] sm:w-[50%]
     bg-black/70 backdrop-blur
     z-50
     flex flex-col gap-6
@@ -195,6 +207,7 @@ const Navbar = () => {
                 {mounted && (
                   <a
                     href={`#${menu}`}
+                    onClick={() => handleMobileNavClick(menu)}
                     className={`rounded-full p-3 px-5 font-bold transition hover:bg-orange-500 hover:text-white
                         ${
                           activeSection === menu
