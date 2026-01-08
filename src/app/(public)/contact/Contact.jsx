@@ -12,6 +12,7 @@ const Contact = () => {
             text-transparent
             font-bold"
           >
+            <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent mb-2" />
             <i>REACH OUT TO US</i>
           </div>
           <div className="text-2xl md:text-3xl">
@@ -23,6 +24,7 @@ const Contact = () => {
           <div className="text-lg md:text-xl bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_45%,rgba(236,79,9,1)_100%)]
             bg-clip-text 
             text-transparent">
+            <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent mb-2" />
             "TAP" on Whatsapp Icon and text "HII"
           </div>
           
@@ -61,6 +63,7 @@ const Contact = () => {
           <div className="text-xl md:text-2xl bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_45%,rgba(236,79,9,1)_100%)]
             bg-clip-text 
             text-transparent">
+          <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent mb-2" />
             You are heartly welcomed at our gym.
           </div>
           <div className="text-xl md:text-2xl bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_45%,rgba(236,79,9,1)_100%)]
@@ -72,6 +75,7 @@ const Contact = () => {
           <div className="text-xl md:text-2xl bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_45%,rgba(236,79,9,1)_100%)]
             bg-clip-text 
             text-transparent">STAY HAPPY</div>
+        <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent" />
         </div>
       </div>
     </>

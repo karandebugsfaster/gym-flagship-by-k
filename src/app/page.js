@@ -60,7 +60,7 @@ export default function Home() {
         <About />
       </section>
 
-      <section id="services" className="min-h-screen bg-blue-400">
+      <section id="services" className="min-h-screen bg-[#0D0D0D]">
         <Services />
       </section>
       <section id="pricing" className="min-h-screen">
@@ -68,7 +68,7 @@ export default function Home() {
       </section>
       <section
         id="faq"
-        className="min-h-screen flex items-center justify-center bg-green-400"
+        className="min-h-screen flex justify-center items-center"
       >
         <Faq />
       </section>

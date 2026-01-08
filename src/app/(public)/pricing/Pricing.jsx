@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 const Pricing = () => {
   return (
     <>
+    <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent mb-2" />
       <div className="min-h-screen flex justify-around flex-col lg:flex-row items-center gap-10 sm:gap-15 md:gap-20 px-7 py-5 sm:py-8">
         <div className="h-[75vh] w-full rounded-3xl relative border-2 border-orange-500 bg-gray-800">
           <div className="h-[25vh] rounded-2xl mx-2 my-3 relative overflow-hidden border-2 border-orange-500">
@@ -151,6 +152,7 @@ const Pricing = () => {
           </div>
         </div>
       </div>
+      <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent mb-2" />
     </>
   );
 };
