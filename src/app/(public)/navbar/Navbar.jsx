@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const Navbar = () => {
-  const menus = ["ABOUT", "SERVICES", "PRICING", "FAQ", "CONTACT"];
-  const [activeSection, setActiveSection] = useState("Home");
+  const menus = ["about", "services", "pricing", "faq", "contact"];
+  const [activeSection, setActiveSection] = useState("home");
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -34,7 +34,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (!mounted) return;
-    const homeSection = document.getElementById("Home");
+    const homeSection = document.getElementById("home");
     if (homeSection) {
       const topOffset = 37 + 74;
 
@@ -65,14 +65,20 @@ const Navbar = () => {
   }, [mounted]);
 
   const handleMobileNavClick = (menu) => {
-    setToggleMenu(false); // close menu
+    setToggleMenu(false);
+
     const section = document.getElementById(menu);
     if (!section) return;
 
-    const topOffset = 37 + 74; // top bar + navbar
-    window.scrollTo({
-      top: section.offsetTop - topOffset,
+    // top bar + navbar height
+
+    // window.scrollTo({
+    //   top: section.offsetTop,
+    //   behavior: "smooth",
+
+    section.scrollIntoView({
       behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -93,7 +99,16 @@ const Navbar = () => {
               className="mix-blend-multiply"
             />
           </div>
-          <a href="#Home">The Real World</a>
+          <button
+            className="cursor-pointer"
+            onClick={() =>
+              document.getElementById("home")?.scrollIntoView({
+                behavior: "smooth",
+              })
+            }
+          >
+            The Real World
+          </button>
         </div>
         <div>
           <ul className="flex gap-3">
@@ -111,17 +126,17 @@ const Navbar = () => {
                   key={i}
                 >
                   {mounted && (
-                    <a
-                      href={`#${menu}`}
-                      className={`rounded-full p-3 px-5 font-bold transition hover:bg-orange-500 hover:text-white
+                    <button
+                      onClick={() => handleMobileNavClick(menu)}
+                      className={`rounded-full p-3 px-5 font-bold transition hover:bg-orange-500 hover:text-white cursor-pointer
                         ${
                           activeSection === menu
                             ? "bg-orange-500 text-white"
                             : "bg-[#a5a5a5] text-black"
                         }`}
                     >
-                      {menu}
-                    </a>
+                      {menu.toUpperCase()}
+                    </button>
                   )}
                 </motion.li>
               );
@@ -205,8 +220,7 @@ const Navbar = () => {
                 key={i}
               >
                 {mounted && (
-                  <a
-                    href={`#${menu}`}
+                  <button
                     onClick={() => handleMobileNavClick(menu)}
                     className={`rounded-full p-3 px-5 font-bold transition hover:bg-orange-500 hover:text-white
                         ${
@@ -215,8 +229,8 @@ const Navbar = () => {
                             : "bg-[#a5a5a5] text-black"
                         }`}
                   >
-                    {menu}
-                  </a>
+                    {menu.toUpperCase()}
+                  </button>
                 )}
               </motion.li>
             );

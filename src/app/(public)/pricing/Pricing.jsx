@@ -48,7 +48,7 @@ const Pricing = () => {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="flex justify-center"
             >
-              <div className="flex justify-center items-center bg-orange-500  text-white  w-fit py-3 px-6 rounded-3xl m-8 lg:m-2 font-bold text-sm md:text-lg">
+              <div className="flex justify-center items-center bg-orange-500  text-white  w-fit py-3 px-6 rounded-3xl mt-4 lg:m-2 font-bold text-sm md:text-lg">
                 BOOK YOUR FREE TRIAL
               </div>
             </motion.div>
@@ -96,7 +96,7 @@ const Pricing = () => {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="flex justify-center"
             >
-              <div className="flex justify-center items-center bg-orange-500  text-white  w-fit py-3 px-6 rounded-3xl m-8 lg:m-2 font-bold text-sm md:text-lg">
+              <div className="flex justify-center items-center bg-orange-500  text-white  w-fit py-3 px-6 rounded-3xl mt-4 lg:m-2 font-bold text-sm md:text-lg">
                 BOOK YOUR FREE TRIAL
               </div>
             </motion.div>
@@ -144,7 +144,7 @@ const Pricing = () => {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="flex justify-center"
             >
-              <div className="flex justify-center items-center bg-orange-500  text-white  w-fit py-3 px-6 rounded-3xl m-8 lg:m-2 font-bold text-sm md:text-lg">
+              <div className="flex justify-center items-center bg-orange-500  text-white  w-fit py-3 px-6 rounded-3xl mt-4 lg:m-2 font-bold text-sm md:text-lg">
                 BOOK YOUR FREE TRIAL
               </div>
             </motion.div>

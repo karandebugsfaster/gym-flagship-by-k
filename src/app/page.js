@@ -30,7 +30,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-black/20 -z-10 pointer-events-none" />
       <Navbar />
       <section
-        id="Home"
+        id="home"
         className="min-h-[calc(100vh-130px)] sm:min-h-[calc(100vh-130px)] md:min-h-[calc(100vh-130px)] lg:min-h-[calc(100vh-74px)] scroll-mt-[150px]"
       >
         <NavbarOrange />
@@ -56,23 +56,23 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section id="ABOUT" className="min-h-screen">
+      <section id="about" className="min-h-screen">
         <About />
       </section>
 
-      <section id="SERVICES" className="min-h-screen bg-blue-400">
+      <section id="services" className="min-h-screen bg-blue-400">
         <Services />
       </section>
-      <section id="PRICING" className="min-h-screen">
+      <section id="pricing" className="min-h-screen">
         <Pricing />
       </section>
       <section
-        id="FAQ"
+        id="faq"
         className="min-h-screen flex items-center justify-center bg-green-400"
       >
         <Faq />
       </section>
-      <section id="CONTACT" className="min-h-screen">
+      <section id="contact" className="min-h-screen">
         <Contact />
       </section>
     </>
