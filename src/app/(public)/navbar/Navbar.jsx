@@ -2,6 +2,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import {
+  fadeRight,
+  fadeLeft,
+  fadeDown,
+  fadeUp,
+} from "@/app/components/animations";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -84,13 +90,19 @@ const Navbar = () => {
 
   return (
     <>
-      <div
+      <motion.div
         className={`sticky top-0 z-50 h-[74px] flex items-center justify-around transition-all duration-300 ease-out
         ${scrolled ? "bg-black/50 backdrop-blur shadow-md" : "bg-transparent"}
         `}
       >
-        <div className="font-bold text-2xl text-white flex items-center gap-2">
-          <div className="relative z-10">
+        <motion.div
+          variants={fadeRight}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.5 }}
+          className="font-bold text-2xl text-white flex items-center gap-2"
+        >
+          <motion.div className="relative z-10">
             <Image
               src="/images/real-world-2.png"
               alt="Real World Logo"
@@ -98,8 +110,8 @@ const Navbar = () => {
               height={50}
               className="mix-blend-multiply"
             />
-          </div>
-          <button
+          </motion.div>
+          <motion.button
             className="cursor-pointer"
             onClick={() =>
               document.getElementById("home")?.scrollIntoView({
@@ -108,9 +120,9 @@ const Navbar = () => {
             }
           >
             The Real World
-          </button>
-        </div>
-        <div>
+          </motion.button>
+        </motion.div>
+        <motion.div>
           <ul className="flex gap-3">
             {menus.map((menu, i) => {
               return (
@@ -122,11 +134,15 @@ const Navbar = () => {
                     stiffness: 300,
                     damping: 20,
                   }}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, amount: 0.25 }}
                   className="hidden lg:flex"
                   key={i}
                 >
                   {mounted && (
-                    <button
+                    <motion.button
                       onClick={() => handleMobileNavClick(menu)}
                       className={`rounded-full p-3 px-5 font-bold transition hover:bg-orange-500 hover:text-white cursor-pointer
                         ${
@@ -136,16 +152,22 @@ const Navbar = () => {
                         }`}
                     >
                       {menu.toUpperCase()}
-                    </button>
+                    </motion.button>
                   )}
                 </motion.li>
               );
             })}
           </ul>
-        </div>
+        </motion.div>
 
-        <div className="flex items-center justify-center gap-1 md:gap-4 lg:gap-1">
-          <div className="relative z-10">
+        <motion.div
+          variants={fadeLeft}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.25 }}
+          className="flex items-center justify-center gap-1 md:gap-4 lg:gap-1"
+        >
+          <motion.div className="relative z-10">
             <Link href="/sign-up">
               <Image
                 src="/images/avatar-loop.gif"
@@ -155,9 +177,9 @@ const Navbar = () => {
                 className="mix-blend-multiply"
               />
             </Link>
-          </div>
-          <div className="relative z-10 lg:hidden">
-            <button
+          </motion.div>
+          <motion.div className="relative z-10 lg:hidden">
+            <motion.button
               className="cursor-pointer"
               onClick={() => {
                 setToggleMenu(!toggleMenu);
@@ -170,11 +192,11 @@ const Navbar = () => {
                 height={40}
                 className="mix-blend-multiply"
               />
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
           <Link href="/sign-up">
             <motion.button
-              className="font-bold text-l hidden lg:flex rounded-full p-3 px-5 bg-[#a5a5a5] text-black hover:bg-orange-500 hover:text-white"
+              className="font-bold text-l hidden lg:flex rounded-full p-3 px-5 bg-[#a5a5a5] text-black hover:bg-orange-500 hover:text-white cursor-pointer"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -182,11 +204,11 @@ const Navbar = () => {
               SIGN-UP
             </motion.button>
           </Link>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
       {/* BACKDROP */}
       {toggleMenu && (
-        <div
+        <motion.div
           onClick={() => setToggleMenu(false)}
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"
         />
@@ -204,23 +226,27 @@ const Navbar = () => {
     pt-28 px-6
     lg:hidden"
       >
-        <button
+        <motion.button
           onClick={() => setToggleMenu(false)}
           className="absolute top-6 right-6 text-white text-3xl font-bold"
         >
           ✕
-        </button>
+        </motion.button>
         <ul className="flex flex-col py-1 gap-10">
           {menus.map((menu, i) => {
             return (
               <motion.li
+                variants={fadeRight}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, amount: 0.25 }}
                 whileHover={{ scale: 1.1 }}
                 animate={{ scale: activeSection === menu ? 1.1 : 1 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 key={i}
               >
                 {mounted && (
-                  <button
+                  <motion.button
                     onClick={() => handleMobileNavClick(menu)}
                     className={`rounded-full p-3 px-5 font-bold transition hover:bg-orange-500 hover:text-white
                         ${
@@ -230,7 +256,7 @@ const Navbar = () => {
                         }`}
                   >
                     {menu.toUpperCase()}
-                  </button>
+                  </motion.button>
                 )}
               </motion.li>
             );

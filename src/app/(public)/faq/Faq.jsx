@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
+import { container, item } from "@/app/components/animations";
 
 const faqs = [
   {
@@ -36,30 +37,44 @@ const Faq = () => {
   const [openIndex, setOpenIndex] = useState(null);
   return (
     <>
-      <div className="h-fit flex flex-col justify-top items-center rounded-3xl w-[90vw]">
-        <div className="py-5">
-          <div
+      <motion.div
+        variants={container}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.25 }}
+        className="h-fit flex flex-col justify-top items-center rounded-3xl w-[90vw]"
+      >
+        <motion.div variants={item} className="py-5">
+          <motion.div
+            variants={item}
             className="w-fit pl-14 text-4xl font-bold bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_45%,rgba(236,79,9,1)_100%)]
         bg-clip-text 
         text-transparent"
           >
             FREQUENTLY
-          </div>
-          <div className="flex justify-center gap-3">
-            <div className="text-4xl font-bold flex flex-col md:flex gap-3 justify-center items-center">
+          </motion.div>
+          <motion.div variants={item} className="flex justify-center gap-3">
+            <motion.div
+              variants={item}
+              className="text-4xl font-bold flex flex-col md:flex gap-3 justify-center items-center"
+            >
               ASKED QUESTIONS
               <Image
-                  src="/images/book-open.gif"
-                  alt="book"
-                  height={50}
-                  width={50}
-                  // className="mix-blend-multiply"
+                src="/images/book-open.gif"
+                alt="book"
+                height={50}
+                width={50}
+                //
+                variants={item}
+                className="mix-blend-multiply"
               />
-              </div>
-            </div>
-          
-        </div>
-        <div className="w-full max-w-3xl space-y-6 cursor-pointer">
+            </motion.div>
+          </motion.div>
+        </motion.div>
+        <motion.div
+          variants={item}
+          className="w-full max-w-3xl space-y-6 cursor-pointer"
+        >
           {faqs.map((item, index) => {
             const isOpen = openIndex === index;
 
@@ -73,20 +88,23 @@ const Faq = () => {
                     : "rgba(255,140,0,0.25)",
                 }}
                 transition={{ duration: 0.35, ease: "easeInOut" }}
+                variants={item}
                 className="
                 border bg-black/60 backdrop-blur-md min-h-[72px] sm:min-h-[80px]
                 px-6 py-5
               "
               >
                 {/* QUESTION */}
-                <button
+                <motion.button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
+                  variants={item}
                   className="
     w-full flex items-start justify-between gap-4
     text-left
   "
                 >
                   <h3
+                    variants={item}
                     className={`font-semibold transition-all duration-300 cursor-pointer leading-snug
       ${
         isOpen
@@ -101,6 +119,7 @@ const Faq = () => {
                   <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
+                    variants={item}
                     className="
       flex-shrink-0
       w-9 h-9 sm:w-10 sm:h-10
@@ -110,7 +129,7 @@ const Faq = () => {
                   >
                     {isOpen ? <X size={18} /> : <Plus size={18} />}
                   </motion.div>
-                </button>
+                </motion.button>
                 {/* ANSWER */}
                 <AnimatePresence initial={false}>
                   {isOpen && (
@@ -122,9 +141,13 @@ const Faq = () => {
                         duration: 0.45,
                         ease: [0.25, 0.8, 0.25, 1],
                       }}
+                      variants={item}
                       className="overflow-hidden"
                     >
-                      <p className="mt-4 text-base cursor-pointer sm:text-lg text-white/90 leading-relaxed">
+                      <p
+                        variants={item}
+                        className="mt-4 text-base cursor-pointer sm:text-lg text-white/90 leading-relaxed"
+                      >
                         {item.a}
                       </p>
                     </motion.div>
@@ -133,8 +156,8 @@ const Faq = () => {
               </motion.div>
             );
           })}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </>
   );
 };
