@@ -3,6 +3,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 const faqs = [
   {
@@ -35,7 +36,7 @@ const Faq = () => {
   const [openIndex, setOpenIndex] = useState(null);
   return (
     <>
-      <div className="h-[90vh] flex flex-col justify-top items-center rounded-3xl w-[90vw]">
+      <div className="h-fit flex flex-col justify-top items-center rounded-3xl w-[90vw]">
         <div className="py-5">
           <div
             className="w-fit pl-14 text-4xl font-bold bg-[linear-gradient(90deg,rgba(254,163,0,1)_0%,rgba(245,122,4,1)_45%,rgba(236,79,9,1)_100%)]
@@ -44,9 +45,21 @@ const Faq = () => {
           >
             FREQUENTLY
           </div>
-          <div className="text-4xl font-bold">ASKED QUESTIONS</div>
+          <div className="flex justify-center gap-3">
+            <div className="text-4xl font-bold flex flex-col md:flex gap-3 justify-center items-center">
+              ASKED QUESTIONS
+              <Image
+                  src="/images/book-open.gif"
+                  alt="book"
+                  height={50}
+                  width={50}
+                  // className="mix-blend-multiply"
+              />
+              </div>
+            </div>
+          
         </div>
-        <div className="w-full max-w-3xl space-y-6">
+        <div className="w-full max-w-3xl space-y-6 cursor-pointer">
           {faqs.map((item, index) => {
             const isOpen = openIndex === index;
 
@@ -74,7 +87,7 @@ const Faq = () => {
   "
                 >
                   <h3
-                    className={`font-semibold transition-all duration-300 leading-snug
+                    className={`font-semibold transition-all duration-300 cursor-pointer leading-snug
       ${
         isOpen
           ? "text-lg sm:text-xl text-orange-400"
@@ -92,7 +105,7 @@ const Faq = () => {
       flex-shrink-0
       w-9 h-9 sm:w-10 sm:h-10
       rounded-full bg-white text-black
-      flex items-center justify-center
+      flex items-center justify-center cursor-pointer
     "
                   >
                     {isOpen ? <X size={18} /> : <Plus size={18} />}
@@ -111,7 +124,7 @@ const Faq = () => {
                       }}
                       className="overflow-hidden"
                     >
-                      <p className="mt-4 text-base sm:text-lg text-white/90 leading-relaxed">
+                      <p className="mt-4 text-base cursor-pointer sm:text-lg text-white/90 leading-relaxed">
                         {item.a}
                       </p>
                     </motion.div>
@@ -122,7 +135,6 @@ const Faq = () => {
           })}
         </div>
       </div>
-      
     </>
   );
 };

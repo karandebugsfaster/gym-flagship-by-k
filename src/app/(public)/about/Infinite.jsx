@@ -39,7 +39,7 @@ const Infinite = () => {
 };
 function Item({ item }) {
   return (
-    <div className="min-w-[200px] h-[100px] bg-black text-white flex items-center justify-center rounded-xl mx-3 text-xl font-bold gap-2">
+    <div className="min-w-[200px] h-[100px] bg-black text-white flex items-center justify-center rounded-xl mx-3 text-xl font-bold gap-2 border-2">
       <Image
         src={item.img}
         alt={item.titsvg}

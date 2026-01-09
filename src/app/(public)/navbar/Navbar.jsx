@@ -12,7 +12,7 @@ const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     if (!mounted) return;
@@ -173,14 +173,14 @@ const Navbar = () => {
             </button>
           </div>
           <Link href="/sign-up">
-            <motion.div
+            <motion.button
               className="font-bold text-l hidden lg:flex rounded-full p-3 px-5 bg-[#a5a5a5] text-black hover:bg-orange-500 hover:text-white"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               SIGN-UP
-            </motion.div>
+            </motion.button>
           </Link>
         </div>
       </div>

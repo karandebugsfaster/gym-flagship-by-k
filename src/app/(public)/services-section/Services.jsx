@@ -1,20 +1,32 @@
 "use-client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const Services = () => {
   return (
     <>
       <div className="flex flex-col md:flex lg:flex-row h-fit w-full py-10  px-5 lg:px-10 gap-10">
         <div className="lg:w-[45vw] flex flex-col gap-7">
-          <div
-            className="text-xl font-bold bg-[linear-gradient(126.6deg,rgba(44,115,210,1)_3.4%,rgba(251,234,255,1)_127.9%)]
-        bg-clip-text 
-        text-transparent"
-          >
-            <u>
-              <i>OUR SERVICES</i>
-            </u>
+          <div className="gap-3">
+            <div
+              className="text-xl font-bold bg-[linear-gradient(126.6deg,rgba(44,115,210,1)_3.4%,rgba(251,234,255,1)_127.9%)]
+            bg-clip-text flex justify-center items-center
+            text-transparent"
+            >
+              <u>
+                <i>OUR SERVICES</i>
+              </u>
+              <div>
+                <Image
+                  src="/images/star.gif"
+                  alt="star"
+                  height={50}
+                  width={50}
+                  // className="mix-blend-multiply"
+                />
+              </div>
+            </div>
           </div>
           <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent mb-2" />
           <div className="text-4xl">
@@ -39,42 +51,74 @@ const Services = () => {
             your body truly needs.
           </div>
           <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent mb-2" />
-          <div className="flex gap-7 lg:gap-35 font-bold flex-col lg:flex-row w-fit mx-auto">
-            <motion.button
-              whileHover={{
-                backgroundColor: "#f97316",
-                scale: 1.1,
-                color: "#ffffff",
-              }}
-              whileTap={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="bg-orange-500 text-white lg:bg-[#a5a5a5] lg:text-black px-5 py-3 rounded-3xl"
-            >
-              EXPLORE PRICING
-            </motion.button>
-            <motion.button
-              whileHover={{
-                backgroundColor: "#f97316",
-                scale: 1.1,
-                color: "#ffffff",
-              }}
-              whileTap={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="bg-orange-500 text-white lg:bg-[#a5a5a5] lg:text-black px-5 py-3 rounded-3xl"
-            >
-              CONTACT US
-              
-            </motion.button>
-            
+          <div className="flex gap-6 font-bold flex-col lg:flex-row w-fit mx-auto">
+            <div className="flex justify-center gap-3">
+              <motion.button
+                whileHover={{
+                  backgroundColor: "#f97316",
+                  scale: 1.1,
+                  color: "#ffffff",
+                }}
+                whileTap={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                onClick={() =>
+                  document.getElementById("pricing")?.scrollIntoView({
+                    behavior: "smooth",
+                  })
+                }
+                className="bg-orange-500 text-white lg:bg-[#a5a5a5] lg:text-black px-5 py-3 rounded-3xl cursor-pointer"
+              >
+                EXPLORE PRICING
+              </motion.button>
+              <Image
+                src="/images/price.gif"
+                alt="price"
+                height={50}
+                width={50}
+                // className="mix-blend-multiply"
+              />
+            </div>
+            <div className="flex justify-center gap-3">
+              <motion.button
+                whileHover={{
+                  backgroundColor: "#f97316",
+                  scale: 1.1,
+                  color: "#ffffff",
+                }}
+                whileTap={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                onClick={() =>
+                  document.getElementById("contact")?.scrollIntoView({
+                    behavior: "smooth",
+                  })
+                }
+                className="bg-orange-500 text-white lg:bg-[#a5a5a5] lg:text-black px-5 py-3 rounded-3xl cursor-pointer"
+              >
+                CONTACT US
+              </motion.button>
+              <Image
+                src="/images/whatsapp-logo-2.svg"
+                alt="cycling"
+                height={50}
+                width={50}
+                // className="mix-blend-multiply"
+              />
+            </div>
           </div>
           <div className="w-full h-[2px] bg-gradient-to-r from-transparent via-gray-500/60 to-transparent mb-2" />
           <div
-            className="text-2xl py-10 bg-[linear-gradient(126.6deg,rgba(44,115,210,1)_3.4%,rgba(251,234,255,1)_127.9%)]
+            className="text-2xl py-5 bg-[linear-gradient(126.6deg,rgba(44,115,210,1)_3.4%,rgba(251,234,255,1)_127.9%)]
         bg-clip-text 
         text-transparent"
           >
             MORE THINGS THAT NO GYM WILL PROVIDE YOU!!!
-            <div></div>
+            <Image
+              src="/images/medal-loop.gif"
+              alt="medal"
+              height={50}
+              width={50}
+              // className="mix-blend-multiply"
+            />
           </div>
         </div>
         <div className="bg-black lg:w-[45vw] flex flex-col gap-1">
@@ -143,7 +187,8 @@ const Services = () => {
                 NUTRITION GUIDANCE
               </div>
               <div>
-                Simple, practical food advice that works in real life. No extremes, just balance.
+                Simple, practical food advice that works in real life. No
+                extremes, just balance.
               </div>
             </div>
           </motion.div>
@@ -177,7 +222,8 @@ const Services = () => {
                 STRENGTH & CONDITIONING
               </div>
               <div>
-                Structured programs to build muscle, boost stamina, and stay injury-free.
+                Structured programs to build muscle, boost stamina, and stay
+                injury-free.
               </div>
             </div>
           </motion.div>
@@ -211,7 +257,8 @@ const Services = () => {
                 YOGA & FLEXIBILITY
               </div>
               <div>
-                Find balance in your body and mind with calming, mobility-focused sessions.
+                Find balance in your body and mind with calming,
+                mobility-focused sessions.
               </div>
             </div>
           </motion.div>
@@ -245,7 +292,8 @@ const Services = () => {
                 PROGRESS TRACKING
               </div>
               <div>
-                We track what matters — so you can see how far you’ve come, and where you’re headed next.
+                We track what matters — so you can see how far you’ve come, and
+                where you’re headed next.
               </div>
             </div>
           </motion.div>
