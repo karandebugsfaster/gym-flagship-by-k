@@ -14,7 +14,7 @@ import PageReveal from "./components/PageReveal";
 // import { useRouter } from "next/navigation";
 import Loader from "./components/Loader";
 import Signup from "./(public)/signup/Signup";
-import Whatsapp from "./(public)/Whatsapp/Whatsapp";
+import Whatsapp from "./(public)/whatsapp/Whatsapp";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
