@@ -5,7 +5,7 @@ import LoginCard from "./LoginCard";
 const Login = () => {
   return (
     <>
-      {/* <PageReveal /> */}
+      <PageReveal />
 
       <div className="min-h-screen w-full flex items-center justify-center bg-[#0b0b0b] relative overflow-hidden px-4">
         
