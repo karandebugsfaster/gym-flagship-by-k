@@ -32,7 +32,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      
       <body className={`${satoshi.variable} antialiased`}>{children}</body>
     </html>
   );

@@ -1,7 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
-
+import Image from "next/image";
 const Signup = () => {
   return (
     <>
@@ -9,37 +8,34 @@ const Signup = () => {
         className="
     fixed 
     right-0 
-    top-1/8 
+    bottom-1/6 
     -translate-y-1/2
     z-50
     block
     lg:hidden
   "
       >
-        <Link href="/sign-up">
+       
           <motion.button
             initial={{ x: 70, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             whileTap={{ scale: 1.1 }}
             className="
-          bg-orange-500
-          text-white
           font-semibold
-          
-          px-5
-          py-3
-          
-          rounded-l-2xl
-          rounded-r-none
-          
-          shadow-lg
-          active:bg-orange-600
+          px-3
           "
           >
-            Sign up
+            <Image
+              src="/images/whatsapp-logo-2.svg"
+              alt="instagram-log0"
+              height={45}
+              width={45}
+              quality={100}
+              className="cursor-pointer"
+            />
           </motion.button>
-        </Link>
+       
       </motion.div>
     </>
   );

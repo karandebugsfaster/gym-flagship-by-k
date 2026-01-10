@@ -47,7 +47,7 @@ const Infinite = () => {
 };
 function Item({ item }) {
   return (
-    <div
+    <motion.div
       variants={container}
       initial="hidden"
       whileInView="show"
@@ -63,7 +63,7 @@ function Item({ item }) {
         className="object-contain"
       />
       <span className="text-lg font-semibold">{item.title}</span>
-    </div>
+    </motion.div>
   );
 }
 export default Infinite;

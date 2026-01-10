@@ -14,6 +14,7 @@ import PageReveal from "./components/PageReveal";
 // import { useRouter } from "next/navigation";
 import Loader from "./components/Loader";
 import Signup from "./(public)/signup/Signup";
+import Whatsapp from "./(public)/Whatsapp/Whatsapp";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/20 -z-10 pointer-events-none" />
           <Navbar />
           <Signup/>
+          <Whatsapp/>
           <section
             id="home"
             className="min-h-[calc(100vh-130px)] sm:min-h-[calc(100vh-130px)] md:min-h-[calc(100vh-130px)] lg:min-h-[calc(100vh-74px)] scroll-mt-[150px]"
