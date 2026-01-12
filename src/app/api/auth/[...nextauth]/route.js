@@ -35,11 +35,11 @@ export const authOptions = {
         }
 
         return {
-          id: user._id,
+          id: user._id.toString(),
           name: user.name,
           phone: user.phone,
           role: user.role,
-          gymId: user.gymId,
+          gymId: user.gymId.toString(), // 👈 CRITICAL
         };
       },
     }),

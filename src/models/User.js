@@ -29,6 +29,15 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+    },
+
+    batch: {
+      type: String,
+      enum: ["morning", "noon", "evening", "night"],
+    },
   },
   {
     timestamps: true,
