@@ -46,6 +46,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import LogoutButton from "../components/LogoutButton";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
@@ -68,17 +69,29 @@ export default async function DashboardPage() {
 
   // 3️⃣ Allowed
   return (
-    <div className="p-8 text-white">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
+    <>
+      <div className="p-8 text-white">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
 
-      <p className="mt-2 text-white/70">
-        Role: <b>{session.user.role}</b>
-      </p>
+        <p className="mt-2 text-white/70">
+          Role: <b>{session.user.role}</b>
+        </p>
 
-      <p className="mt-1 text-white/70">
-        Gym ID: <b>{session.user.gymId}</b>
-      </p>
-      <LogoutButton />
-    </div>
+        <p className="mt-1 text-white/70">
+          Gym ID: <b>{session.user.gymId}</b>
+        </p>
+        <LogoutButton />
+      </div>
+      {session.user.role === "admin" && (
+        <div className="mt-6">
+          <Link
+            href="/manager"
+            className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
+          >
+            Open Manager
+          </Link>
+        </div>
+      )}
+    </>
   );
 }

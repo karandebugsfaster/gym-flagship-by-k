@@ -36,7 +36,7 @@ export default function AddMemberForm({ onClose, onSuccess }) {
         placeholder="Member Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="block w-full mb-3 p-2 rounded text-black"
+        className="block w-full mb-3 p-2 rounded text-white"
       />
 
       {/* Phone */}
@@ -44,7 +44,7 @@ export default function AddMemberForm({ onClose, onSuccess }) {
         placeholder="Phone Number"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
-        className="block w-full mb-3 p-2 rounded text-black"
+        className="block w-full mb-3 p-2 rounded text-white"
       />
 
       {/* Gender */}
