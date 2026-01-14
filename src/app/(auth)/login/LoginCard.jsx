@@ -119,25 +119,41 @@ import { useState } from "react";
 const LoginCard = () => {
   const router = useRouter();
 
+  const [mode, setMode] = useState("member"); // "staff" | "member"
+  const [loading, SetLoading] = useState(false);
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [gymId, setGymId] = useState("");
+  const [memberId, setMemberId] = useState("");
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    const res = await signIn("credentials", {
-      phone,
-      password,
-      redirect: false,
-    });
+    const payload =
+      mode === "staff"
+        ? {
+            phone,
+            password,
+            redirect: false,
+          }
+        : {
+            phone,
+            gymId,
+            memberId,
+            redirect: false,
+          };
+
+    const res = await signIn("credentials", payload);
 
     if (res?.error) {
-      setError("Invalid phone or password");
-    } else {
-      router.push("/dashboard");
+      setError(res.error);
+      return;
     }
+
+    // Redirect after login
+    router.push(mode === "staff" ? "/dashboard" : "/member");
   };
 
   return (
@@ -165,6 +181,34 @@ const LoginCard = () => {
 
       {/* FORM */}
       <form onSubmit={handleLogin} className="mt-8 space-y-5">
+        {/* MODE TOGGLE */}
+        <div className="flex justify-center gap-4 mb-4">
+          <button
+            type="button"
+            onClick={() => setMode("staff")}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+              mode === "staff"
+                ? "bg-orange-500 text-white"
+                : "bg-white/10 text-white/60"
+            }`}
+          >
+            Admin / Manager
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setMode("member")}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold ${
+              mode === "member"
+                ? "bg-orange-500 text-white"
+                : "bg-white/10 text-white/60"
+            }`}
+          >
+            Member
+          </button>
+        </div>
+
+        {/* PHONE */}
         <Input
           label="Phone Number"
           type="text"
@@ -172,12 +216,34 @@ const LoginCard = () => {
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        <Input
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        {/* STAFF PASSWORD */}
+        {mode === "staff" && (
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        )}
+
+        {/* MEMBER FIELDS */}
+        {mode === "member" && (
+          <>
+            <Input
+              label="Gym ID"
+              type="text"
+              value={gymId}
+              onChange={(e) => setGymId(e.target.value)}
+            />
+
+            <Input
+              label="Member ID"
+              type="text"
+              value={memberId}
+              onChange={(e) => setMemberId(e.target.value)}
+            />
+          </>
+        )}
 
         {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
@@ -185,20 +251,21 @@ const LoginCard = () => {
           type="submit"
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
+          disabled={loading}
           className="
-            w-full mt-4
-            py-3 rounded-2xl
-            font-bold text-white
-            bg-gradient-to-r from-orange-400 via-orange-500 to-red-500
-            shadow-lg shadow-orange-500/30
-          "
+      w-full mt-4
+      py-3 rounded-2xl
+      font-bold text-white
+      bg-gradient-to-r from-orange-400 via-orange-500 to-red-500
+      shadow-lg shadow-orange-500/30
+    "
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </motion.button>
       </form>
 
       {/* Footer */}
-      <p className="text-center text-white/60 text-sm mt-6">New here?</p>
+      {/* <p className="text-center text-white/60 text-sm mt-6">New here?</p>
       <Link href="/sign-up">
         <motion.button
           whileHover={{ scale: 1.04 }}
@@ -215,7 +282,7 @@ const LoginCard = () => {
         >
           Create Account
         </motion.button>
-      </Link>
+      </Link> */}
     </motion.div>
   );
 };

@@ -5,22 +5,32 @@ import { connectDB } from "@/lib/db";
 import User from "@/models/User";
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
+  try {
+    await connectDB();
 
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    if (!["admin", "manager"].includes(session.user.role)) {
+      return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+    }
+
+    // 🔥 THIS IS THE KEY LINE
+    const members = await User.find({
+      role: "user",
+      // gymId: session.user.gymId, // e.g. "1"
+      gymId: "1",
+    }).sort({ createdAt: -1 });
+
+    return NextResponse.json({ members });
+  } catch (err) {
+    console.error("Fetch members error:", err);
+    return NextResponse.json(
+      { message: "Server error" },
+      { status: 500 }
+    );
   }
-
-  if (!["admin", "manager"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
-  await connectDB();
-
-  const members = await User.find({
-    gymId: session.user.gymId,
-    role: "user",
-  }).select("name phone gender batch createdAt");
-
-  return NextResponse.json({ members });
 }

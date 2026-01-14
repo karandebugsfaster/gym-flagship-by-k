@@ -168,7 +168,7 @@ const Navbar = () => {
           className="flex items-center justify-center gap-1 md:gap-4 lg:gap-1"
         >
           <motion.div className="relative z-10">
-            <Link href="/sign-up">
+            <Link href="/login">
               <Image
                 src="/images/avatar-loop.gif"
                 alt="Avatar"
@@ -194,14 +194,14 @@ const Navbar = () => {
               />
             </motion.button>
           </motion.div>
-          <Link href="/sign-up">
+          <Link href="/login">
             <motion.button
               className="font-bold text-l hidden lg:flex rounded-full p-3 px-5 bg-[#a5a5a5] text-black hover:bg-orange-500 hover:text-white cursor-pointer"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 1.1 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              SIGN-UP
+              LOGIN
             </motion.button>
           </Link>
         </motion.div>

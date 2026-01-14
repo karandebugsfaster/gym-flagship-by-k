@@ -30,8 +30,8 @@ export default function ManagerClient() {
 
   if (loading) return <p>Loading members...</p>;
 
-  if (members.length === 0) {
-    return <p>No members yet.</p>;
+  {
+    members.length === 0 && <p className="text-white/60">No members yet.</p>;
   }
 
   return (
@@ -42,7 +42,6 @@ export default function ManagerClient() {
         {showForm && (
           <AddMemberForm
             onClose={() => setShowForm(false)}
-            onSuccess={(id) => router.push(`/members/${id}`)}
           />
         )}
       </div>

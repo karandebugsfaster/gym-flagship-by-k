@@ -38,6 +38,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: ["morning", "noon", "evening", "night"],
     },
+    memberId: {
+      type: String,
+      unique: true,
+    },
   },
   {
     timestamps: true,

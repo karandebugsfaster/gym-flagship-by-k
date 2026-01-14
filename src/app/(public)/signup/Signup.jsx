@@ -16,7 +16,7 @@ const Signup = () => {
     lg:hidden
   "
       >
-        <Link href="/sign-up">
+        <Link href="/login">
           <motion.button
             initial={{ x: 70, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -37,7 +37,7 @@ const Signup = () => {
           active:bg-orange-600
           "
           >
-            Sign up
+            Login
           </motion.button>
         </Link>
       </motion.div>

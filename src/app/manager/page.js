@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import ManagerClient from "@/app/components/ManagerClient";
+import ManagerTotalMembers from "./ManagerTotalMembers";
+import AdminManagerClient from "../components/AdminManagerClient";
 
 export default async function ManagerPage() {
   const session = await getServerSession(authOptions);
@@ -13,37 +14,20 @@ export default async function ManagerPage() {
   }
 
   return (
-    <div className="p-6 text-white">
-      <h1 className="text-3xl font-bold mb-6">Manager Dashboard</h1>
-      <ManagerClient />
+    <div className="p-8 text-white space-y-6">
+      {/* Welcome */}
+      <div>
+        <h1 className="text-3xl font-bold">Welcome, {session.user.name} 👋</h1>
+        <p className="text-white/60">
+          Role: {session.user.role === "admin" ? "Gym Owner" : "Manager"}
+        </p>
+      </div>
+
+      {/* Client workspace */}
+      <ManagerTotalMembers />
+
+      {/* Admin-only */}
+      <AdminManagerClient />
     </div>
   );
 }
-
-// import { NextResponse } from "next/server";
-// import { getServerSession } from "next-auth";
-// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-// import { connectDB } from "@/lib/db";
-// import User from "@/models/User";
-
-// export async function GET() {
-//   const session = await getServerSession(authOptions);
-
-//   if (!session) {
-//     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//   }
-
-//   if (!["admin", "manager"].includes(session.user.role)) {
-//     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-//   }
-
-//   await connectDB();
-
-//   const members = await User.find({
-//     gymId: session.user.gymId,
-//     role: "user",
-//   }).select("name phone gender batch createdAt");
-
-//   return NextResponse.json({ members });
-// }
-

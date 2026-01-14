@@ -11,40 +11,77 @@ export const authOptions = {
 
       credentials: {
         phone: { label: "Phone", type: "text" },
-        password: { label: "Password", type: "password" },
+        password: { label: "Password", type: "password" }, // admin/manager only
+        gymId: { label: "Gym ID", type: "text" }, // member only
+        memberId: { label: "Member ID", type: "text" }, // member only
       },
 
       async authorize(credentials) {
         await connectDB();
 
-        const { phone, password } = credentials;
+        const { phone, password, gymId, memberId } = credentials;
 
-        if (!phone || !password) {
-          throw new Error("Missing credentials");
+        if (!phone) {
+          throw new Error("Phone is required");
         }
 
-        const user = await User.findOne({ phone });
-        if (!user) {
-          throw new Error("User not found");
+        // 🔹 CASE 1: ADMIN / MANAGER LOGIN (password-based)
+        if (password) {
+          const user = await User.findOne({ phone });
+
+          if (!user) {
+            throw new Error("User not found");
+          }
+
+          if (!["admin", "manager"].includes(user.role)) {
+            throw new Error("Not allowed to login here");
+          }
+
+          const isPasswordCorrect = await bcrypt.compare(
+            password,
+            user.password
+          );
+          if (!isPasswordCorrect) {
+            throw new Error("Invalid password");
+          }
+
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            phone: user.phone,
+            role: user.role,
+            gymId: user.gymId?.toString(),
+          };
         }
 
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+        // 🔹 CASE 2: MEMBER LOGIN (ID-based, no password)
+        if (gymId && memberId) {
+          const user = await User.findOne({
+            phone,
+            gymId,
+            memberId,
+            role: "user",
+          });
 
-        if (!isPasswordCorrect) {
-          throw new Error("Invalid password");
+          if (!user) {
+            throw new Error("Invalid member details");
+          }
+
+          return {
+            id: user._id.toString(),
+            name: user.name,
+            phone: user.phone,
+            role: user.role, // "user"
+            gymId: user.gymId.toString(),
+          };
         }
 
-        return {
-          id: user._id.toString(),
-          name: user.name,
-          phone: user.phone,
-          role: user.role,
-          gymId: user.gymId.toString(), // 👈 CRITICAL
-        };
+        // ❌ If neither flow matched
+        throw new Error("Invalid login method");
       },
     }),
   ],
-
+  
   session: {
     strategy: "jwt",
   },
