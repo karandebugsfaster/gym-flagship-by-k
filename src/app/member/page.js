@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { connectDB } from "@/lib/db";
+import connectDB from "@/lib/db";
 import User from "@/models/User";
 import LogoutButton from "../components/LogoutButton";
 
