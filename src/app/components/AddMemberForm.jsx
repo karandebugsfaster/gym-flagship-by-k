@@ -186,7 +186,7 @@ export default function AddMemberForm({ onClose }) {
   };
 
   return (
-    <div className="mt-6 p-4 rounded-xl bg-white/10">
+    <div className=" mb-3 p-4 rounded-xl bg-white/10">
       <h2 className="text-xl font-bold mb-4">Add Member</h2>
 
       {error && (

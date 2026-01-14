@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ManagerTotalMembers from "./ManagerTotalMembers";
 import AdminManagerClient from "../components/AdminManagerClient";
+import ManagerPlanBox from "../components/ManagerPlanBox";
 
 export default async function ManagerPage() {
   const session = await getServerSession(authOptions);
@@ -25,9 +26,10 @@ export default async function ManagerPage() {
 
       {/* Client workspace */}
       <ManagerTotalMembers />
-
       {/* Admin-only */}
       <AdminManagerClient />
+      {/* Plans */}
+      <ManagerPlanBox />
     </div>
   );
 }

@@ -1,28 +1,32 @@
 import mongoose from "mongoose";
 
-const PlanSchema = new mongoose.Schema(
+const planSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+      trim: true,
     },
 
     price: {
       type: Number,
       required: true,
+      min: 0,
     },
 
     durationDays: {
-      type: Number, // e.g. 30, 90, 365
+      type: Number,
       required: true,
+      min: 1,
     },
 
     gymId: {
       type: String,
       required: true,
+      index: true,
     },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.Plan || mongoose.model("Plan", PlanSchema);
+export default mongoose.models.Plan || mongoose.model("Plan", planSchema);
