@@ -13,7 +13,7 @@ import { container, item } from "@/app/components/animations";
 import PageReveal from "./components/PageReveal";
 // import { useRouter } from "next/navigation";
 import Loader from "./components/Loader";
-import Signup from "./(public)/signup/Signup";
+import Login from "./(public)/login/Login";
 import Whatsapp from "./(public)/whatsapp/Whatsapp";
 
 export default function Home() {
@@ -40,7 +40,7 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black/20 -z-10 pointer-events-none" />
           <Navbar />
-          <Signup/>
+          <Login/>
           <Whatsapp/>
           <section
             id="home"
