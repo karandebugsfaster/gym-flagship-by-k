@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AssignPlanModal from "./AssignPlanModal";
+import { openWhatsApp } from "@/lib/whatsapp";
 
 export default function ExpiredMembersSection({ gymId, plans }) {
   const [expired, setExpired] = useState([]);
@@ -55,6 +56,21 @@ export default function ExpiredMembersSection({ gymId, plans }) {
               className="mt-3 px-3 py-1 bg-orange-500 text-white rounded"
             >
               Renew Plan
+            </button>
+            <button
+              onClick={() =>
+                window.open(
+                  `https://wa.me/91${m.userId.phone}?text=${encodeURIComponent(
+                    `Hi ${m.userId.name}, your gym plan expired on ${new Date(
+                      m.endDate
+                    ).toDateString()}. Please renew to continue training 💪`
+                  )}`,
+                  "_blank"
+                )
+              }
+              className="mt-2 px-3 py-1 bg-green-600 text-white rounded"
+            >
+              💬 Send Expiry Message
             </button>
           </div>
         );

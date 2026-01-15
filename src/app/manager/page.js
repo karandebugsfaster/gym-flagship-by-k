@@ -6,6 +6,8 @@ import AdminManagerClient from "../components/AdminManagerClient";
 import ManagerPlanBox from "../components/ManagerPlanBox";
 import MainManagerDashboard from "../components/MainManagerDashboard";
 import ManagerExpiredBox from "../components/ManagerExpiredBox";
+import ManagerEnquirySection from "./ManagerEnquirySection";
+import ManagerExpiringSoonButton from "./ManagerExpiringSoonButton";
 
 export default async function ManagerPage() {
   const session = await getServerSession(authOptions);
@@ -34,6 +36,10 @@ export default async function ManagerPage() {
       <ManagerPlanBox />
       {/* Expired Members */}
       <ManagerExpiredBox />
+      {/* Expiring Soon Members */}
+      <ManagerExpiringSoonButton />
+      {/* Enquiries */}
+      <ManagerEnquirySection />
       {/* Manager Main Dashboard */}
       <MainManagerDashboard />
     </div>
