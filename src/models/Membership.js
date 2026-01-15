@@ -1,6 +1,7 @@
+// models/Membership.js
 import mongoose from "mongoose";
 
-const MembershipSchema = new mongoose.Schema(
+const membershipSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -39,4 +40,4 @@ const MembershipSchema = new mongoose.Schema(
 );
 
 export default mongoose.models.Membership ||
-  mongoose.model("Membership", MembershipSchema);
+  mongoose.model("Membership", membershipSchema);

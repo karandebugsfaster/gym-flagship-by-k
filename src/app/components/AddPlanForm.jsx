@@ -2,11 +2,28 @@
 
 import { useState } from "react";
 
-export default function AddPlanForm({ onClose, onSuccess }) {
-  const [name, setName] = useState("");
-  const [durationType, setDurationType] = useState("months");
-  const [duration, setDuration] = useState("");
-  const [price, setPrice] = useState("");
+export default function AddPlanForm({
+  onClose,
+  onSuccess,
+  initialData = null,
+  planId = null,
+}) {
+  const [name, setName] = useState(initialData?.name || "");
+  const [durationType, setDurationType] = useState(
+    initialData
+      ? initialData.durationDays % 30 === 0
+        ? "months"
+        : "days"
+      : "months"
+  );
+  const [duration, setDuration] = useState(
+    initialData
+      ? initialData.durationDays % 30 === 0
+        ? initialData.durationDays / 30
+        : initialData.durationDays
+      : ""
+  );
+  const [price, setPrice] = useState(initialData?.price || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -21,15 +38,18 @@ export default function AddPlanForm({ onClose, onSuccess }) {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/plans/create", {
-        method: "POST",
+      const url = planId ? `/api/plans/${planId}` : "/api/plans/create";
+      const method = planId ? "PATCH" : "POST";
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name,
           duration: Number(duration),
           durationType,
           price: Number(price),
-          gymId: "1", // manual by design
+          gymId: "1",
         }),
       });
 
@@ -110,7 +130,7 @@ export default function AddPlanForm({ onClose, onSuccess }) {
           disabled={loading}
           className="w-full bg-zinc-800 text-white py-3 rounded-xl disabled:opacity-50"
         >
-          {loading ? "Saving..." : "Add Plan"}
+          {loading ? "Saving..." : planId ? "Update Plan" : "Add Plan"}
         </button>
       </div>
     </div>

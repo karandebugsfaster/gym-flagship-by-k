@@ -4,6 +4,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ManagerTotalMembers from "./ManagerTotalMembers";
 import AdminManagerClient from "../components/AdminManagerClient";
 import ManagerPlanBox from "../components/ManagerPlanBox";
+import MainManagerDashboard from "../components/MainManagerDashboard";
+import ManagerExpiredBox from "../components/ManagerExpiredBox";
 
 export default async function ManagerPage() {
   const session = await getServerSession(authOptions);
@@ -30,6 +32,10 @@ export default async function ManagerPage() {
       <AdminManagerClient />
       {/* Plans */}
       <ManagerPlanBox />
+      {/* Expired Members */}
+      <ManagerExpiredBox />
+      {/* Manager Main Dashboard */}
+      <MainManagerDashboard />
     </div>
   );
 }

@@ -16,10 +16,10 @@ export default function ManagerWorkspace() {
       >
         Membership Plans
       </button>
-
+    
       {/* Modal */}
       {showPlans && (
-        <ModalBox title="All Members" onClose={() => setShowPlans(false)}>
+        <ModalBox title="All Plans" onClose={() => setShowPlans(false)}>
           <ManagerPlanSection />
         </ModalBox>
       )}

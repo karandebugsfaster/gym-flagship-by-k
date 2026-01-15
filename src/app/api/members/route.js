@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
+import { expireOldMemberships } from "@/lib/expireMemberships";
 
 export async function GET() {
   try {
@@ -25,12 +26,11 @@ export async function GET() {
       gymId: "1",
     }).sort({ createdAt: -1 });
 
+    await expireOldMemberships("1"); // later replace with session.user.gymId
+
     return NextResponse.json({ members });
   } catch (err) {
     console.error("Fetch members error:", err);
-    return NextResponse.json(
-      { message: "Server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
