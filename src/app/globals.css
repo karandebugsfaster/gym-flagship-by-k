@@ -28,10 +28,9 @@ html {
 }
 /* ::-webkit-scrollbar-track { background: #000; } */
 
-
 :root {
   --background: #000000;
-  --foreground: #FFFFFF;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -63,7 +62,60 @@ body {
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE & Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
+/* ================================
+   GLOBAL TYPOGRAPHY SYSTEM
+   ================================ */
+
+body {
+  font-family: var(--font-satoshi), system-ui, sans-serif;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+/* Headings */
+h1 {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Paragraphs & labels */
+p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Small helper text */
+.text-muted {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* Numbers (money, stats) */
+.stat-number {
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Buttons */
+button {
+  font-weight: 600;
+}
