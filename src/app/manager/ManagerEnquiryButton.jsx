@@ -1,25 +1,25 @@
 "use client";
 import { useState } from "react";
-import ManagerExpiredSection from "../components/ManagerExpiredSection";
+import ManagerEnquirySection from "./ManagerEnquirySection";
 import ModalBox from "../components/ModalBox";
 
 export default function ManagerWorkspace() {
-  const [showExpiredMember, setShowExpiredMember] = useState(false);
+  const [showEnquirySection, setShowEnquirySection] = useState(false);
 
   return (
     <div className="space-y-6">
       {/* Button */}
       <button
-        onClick={() => setShowExpiredMember(true)}
-        className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 transition font-semibold"
+        onClick={() => setShowEnquirySection(true)}
+        className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 transition font-semibold"
       >
-        Expired Members
+        Enquiry Section
       </button>
 
       {/* Modal */}
-      {showExpiredMember && (
-        <ModalBox title="All Expired Members" onClose={() => setShowExpiredMember(false)}>
-          <ManagerExpiredSection />
+      {showEnquirySection && (
+        <ModalBox title="All Enquiry Members" onClose={() => setShowEnquirySection(false)}>
+          <ManagerEnquirySection />
         </ModalBox>
       )}
     </div>

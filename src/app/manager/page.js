@@ -6,7 +6,7 @@ import AdminManagerClient from "../components/AdminManagerClient";
 import ManagerPlanBox from "../components/ManagerPlanBox";
 import MainManagerDashboard from "../components/MainManagerDashboard";
 import ManagerExpiredBox from "../components/ManagerExpiredBox";
-import ManagerEnquirySection from "./ManagerEnquirySection";
+import ManagerEnquiryButton from "./ManagerEnquiryButton";
 import ManagerExpiringSoonButton from "./ManagerExpiringSoonButton";
 
 export default async function ManagerPage() {
@@ -35,11 +35,11 @@ export default async function ManagerPage() {
       {/* Plans */}
       <ManagerPlanBox />
       {/* Expired Members */}
-      <ManagerExpiredBox />
+      <ManagerExpiredBox /> 
       {/* Expiring Soon Members */}
       <ManagerExpiringSoonButton />
       {/* Enquiries */}
-      <ManagerEnquirySection />
+      <ManagerEnquiryButton />
       {/* Manager Main Dashboard */}
       <MainManagerDashboard />
     </div>

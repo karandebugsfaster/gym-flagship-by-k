@@ -35,6 +35,10 @@ const membershipSchema = new mongoose.Schema(
       enum: ["active", "expired"],
       default: "active",
     },
+    whatsappSent: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

@@ -50,6 +50,13 @@ const MainManagerDashboard = () => {
               {stats.expiredMembers}
             </p>
           </div>
+          
+          <div className="p-4 rounded-xl bg-green-500/10 col-span-2">
+            <p className="text-sm text-green-400">📞 Enquiries handled today</p>
+            <p className="text-2xl font-bold text-green-400">
+              {stats.enquiriesHandledToday}
+            </p>
+          </div>
 
           <div className="p-4 rounded-xl bg-white/10 col-span-2">
             <p className="text-sm text-gray-400">This Year</p>

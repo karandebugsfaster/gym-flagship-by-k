@@ -1,62 +1,50 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import connectDB from "@/lib/db";
-import User from "@/models/User";
 import LogoutButton from "../components/LogoutButton";
 import UserDashboardClient from "../user/UserDashboardClient";
 
-export default async function MemberDashboard() {
-  // 1️⃣ Get session
+export default async function UserDashboardPage() {
+  // 1️⃣ SESSION
   const session = await getServerSession(authOptions);
 
   if (!session) {
     redirect("/login");
   }
 
-  // 2️⃣ Only members allowed
+  // 2️⃣ ONLY MEMBERS
   if (session.user.role !== "user") {
     redirect("/dashboard");
   }
 
-  // 3️⃣ Fetch member from DB
-  await connectDB();
-
-  const member = await User.findById(session.user.id);
-
-  if (!member) {
-    redirect("/login");
-  }
-
   return (
-    <>
-      <div className="p-6 text-white">
-        <h1 className="text-3xl font-bold mb-4">Welcome, {member.name} 👋</h1>
+    <div className="min-h-screen p-6 text-white space-y-6">
+      {/* HEADER */}
+      <div>
+        <h1 className="text-3xl font-bold">Welcome, {session.user.name} 👋</h1>
+        <p className="text-white/60 text-sm">Member Dashboard</p>
+      </div>
 
-        <div className="space-y-2 text-white/80">
-          <p>
-            <b>Phone:</b> {member.phone}
-          </p>
-          <p>
-            <b>Gym ID:</b> {member.gymId}
-          </p>
-          <p>
-            <b>Member ID:</b> {member.memberId}
-          </p>
-          <p>
-            <b>Gender:</b> {member.gender}
-          </p>
-          <p>
-            <b>Batch:</b> {member.batch}
-          </p>
-        </div>
-
-        <p className="mt-6 text-sm text-white/50">
-          More features coming soon 🚀
+      {/* BASIC INFO */}
+      <div className="rounded-xl border border-white/20 p-4 space-y-2 bg-white/5">
+        <p>
+          <b>Phone:</b> {session.user.phone}
+        </p>
+        <p>
+          <b>Gym ID:</b> {session.user.gymId}
+        </p>
+        <p>
+          <b>Member ID:</b> {session.user.id}
         </p>
       </div>
-      <UserDashboardClient />
-      <LogoutButton />
-    </>
+
+      {/* MEMBERSHIP INFO (CLIENT) */}
+      <UserDashboardClient gymId={session.user.gymId} />
+
+      {/* LOGOUT */}
+      <div className="pt-6">
+        <LogoutButton />
+      </div>
+    </div>
   );
 }

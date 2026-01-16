@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
 import Plan from "@/models/Plan";
+import Enquiry from "@/models/Enquiry";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Membership from "@/models/Membership";
@@ -73,6 +74,11 @@ export async function GET(req) {
       $or: [{ status: "expired" }, { endDate: { $lt: now } }],
     });
 
+    const enquiriesHandledToday = await Enquiry.countDocuments({
+      gymId,
+      updatedAt: { $gte: startOfToday },
+    });
+
     return NextResponse.json({
       totalMembers,
       totalPlans,
@@ -80,6 +86,7 @@ export async function GET(req) {
       membersThisMonth,
       membersThisYear,
       expiredMembers,
+      enquiriesHandledToday, // 👈 NEW
     });
   } catch (err) {
     console.error("❌ MANAGER STATS ERROR:", err);

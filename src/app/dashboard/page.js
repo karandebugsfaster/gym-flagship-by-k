@@ -7,18 +7,20 @@ import Link from "next/link";
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
-  // 1️⃣ Not logged in
+  // ❌ NOT LOGGED IN
   if (!session) {
     redirect("/login");
   }
 
-  // 2️⃣ Members should NEVER be here
-  if (session.user.role === "user") {
+  const { role, gymId } = session.user;
+
+  // ❌ MEMBER SHOULD NEVER ACCESS DASHBOARD
+  if (role === "user") {
     redirect("/member");
   }
 
-  // 3️⃣ No gym assigned
-  if (!session.user.gymId) {
+  // ❌ NO GYM ASSIGNED (admin / manager misconfigured)
+  if (!gymId) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
         <h1 className="text-xl font-bold">
@@ -28,8 +30,8 @@ export default async function DashboardPage() {
     );
   }
 
-  // 4️⃣ Admin Dashboard
-  if (session.user.role === "admin") {
+  // 👑 ADMIN DASHBOARD
+  if (role === "admin") {
     return (
       <div className="p-8 text-white space-y-6">
         <h1 className="text-3xl font-bold">Admin Dashboard 👑</h1>
@@ -37,25 +39,23 @@ export default async function DashboardPage() {
         <p className="text-white/70">You are the gym owner</p>
 
         <p className="text-white/70">
-          Gym ID: <b>{session.user.gymId}</b>
+          Gym ID: <b>{gymId}</b>
         </p>
-        <div className="flex gap-5">
-          <div className="flex gap-4 mt-6">
-            <Link
-              href="/manager"
-              className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
-            >
-              Open Manager
-            </Link>
-          </div>
-          <div className="flex gap-4 mt-6">
-            <Link
-              href="/owner/sales"
-              className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
-            >
-              Open Sales
-            </Link>
-          </div>
+
+        <div className="flex gap-4 mt-6">
+          <Link
+            href="/manager"
+            className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
+          >
+            Open Manager
+          </Link>
+
+          <Link
+            href="/owner/sales"
+            className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
+          >
+            Open Sales
+          </Link>
         </div>
 
         <LogoutButton />
@@ -63,17 +63,16 @@ export default async function DashboardPage() {
     );
   }
 
-  // 5️⃣ Manager Dashboard
-  if (session.user.role === "manager") {
+  // 🧑‍💼 MANAGER DASHBOARD
+  if (role === "manager") {
     return (
       <div className="p-8 text-white space-y-6">
         <h1 className="text-3xl font-bold">Manager Dashboard 🧑‍💼</h1>
 
-        {/* <p className="text-white/70">Welcome {user.name}</p> */}
         <p className="text-white/70">You manage daily gym operations</p>
 
         <p className="text-white/70">
-          Gym ID: <b>{session.user.gymId}</b>
+          Gym ID: <b>{gymId}</b>
         </p>
 
         <div className="flex gap-4 mt-6">
@@ -90,6 +89,6 @@ export default async function DashboardPage() {
     );
   }
 
-  // fallback (should never happen)
+  // 🚨 FALLBACK (SHOULD NEVER HIT)
   redirect("/login");
 }
