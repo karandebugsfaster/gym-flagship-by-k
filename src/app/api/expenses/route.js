@@ -56,3 +56,32 @@ export async function GET(req) {
 
   return NextResponse.json({ expenses });
 }
+
+// PATCH FOR EDITING
+export async function PATCH(req) {
+  try {
+    await connectDB();
+
+    const body = await req.json();
+    const { expenseId, title, amount, note } = body;
+
+    if (!expenseId) {
+      return NextResponse.json({ error: "Missing expenseId" }, { status: 400 });
+    }
+
+    const updatedExpense = await Expense.findByIdAndUpdate(
+      expenseId,
+      {
+        title,
+        amount,
+        note,
+      },
+      { new: true }
+    );
+
+    return NextResponse.json({ expense: updatedExpense });
+  } catch (err) {
+    console.error("❌ UPDATE EXPENSE ERROR:", err);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}

@@ -1,3 +1,97 @@
+// import { getServerSession } from "next-auth";
+// import { redirect } from "next/navigation";
+// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+// import LogoutButton from "../components/LogoutButton";
+// import Link from "next/link";
+
+// export default async function DashboardPage() {
+//   const session = await getServerSession(authOptions);
+
+//   // ❌ NOT LOGGED IN
+//   if (!session) {
+//     redirect("/login");
+//   }
+
+//   const { role, gymId } = session.user;
+
+//   // ❌ MEMBER SHOULD NEVER ACCESS DASHBOARD
+//   if (role === "user") {
+//     redirect("/member");
+//   }
+
+//   // ❌ NO GYM ASSIGNED (admin / manager misconfigured)
+//   if (!gymId) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center text-white">
+//         <h1 className="text-xl font-bold">
+//           No gym assigned. Please contact admin.
+//         </h1>
+//       </div>
+//     );
+//   }
+
+//   // 👑 ADMIN DASHBOARD
+//   if (role === "admin") {
+//     return (
+//       <div className="p-8 text-white space-y-6">
+//         <h1 className="text-3xl font-bold">Admin Dashboard 👑</h1>
+
+//         <p className="text-white/70">You are the gym owner</p>
+
+//         <p className="text-white/70">
+//           Gym ID: <b>{gymId}</b>
+//         </p>
+
+//         <div className="flex gap-4 mt-6">
+//           <Link
+//             href="/manager"
+//             className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
+//           >
+//             Open Manager
+//           </Link>
+
+//           <Link
+//             href="/owner/sales"
+//             className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
+//           >
+//             Open Sales
+//           </Link>
+//         </div>
+
+//         <LogoutButton />
+//       </div>
+//     );
+//   }
+
+//   // 🧑‍💼 MANAGER DASHBOARD
+//   if (role === "manager") {
+//     return (
+//       <div className="p-8 text-white space-y-6">
+//         <h1 className="text-3xl font-bold">Manager Dashboard 🧑‍💼</h1>
+
+//         <p className="text-white/70">You manage daily gym operations</p>
+
+//         <p className="text-white/70">
+//           Gym ID: <b>{gymId}</b>
+//         </p>
+
+//         <div className="flex gap-4 mt-6">
+//           <Link
+//             href="/manager"
+//             className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700 transition"
+//           >
+//             Go to Manager Panel
+//           </Link>
+//         </div>
+
+//         <LogoutButton />
+//       </div>
+//     );
+//   }
+
+//   // 🚨 FALLBACK (SHOULD NEVER HIT)
+//   redirect("/login");
+// }
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -7,88 +101,119 @@ import Link from "next/link";
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
 
-  // ❌ NOT LOGGED IN
-  if (!session) {
-    redirect("/login");
-  }
+  if (!session) redirect("/login");
 
-  const { role, gymId } = session.user;
+  const { role, gymId, name } = session.user;
 
-  // ❌ MEMBER SHOULD NEVER ACCESS DASHBOARD
-  if (role === "user") {
-    redirect("/member");
-  }
+  if (role === "user") redirect("/member");
 
-  // ❌ NO GYM ASSIGNED (admin / manager misconfigured)
   if (!gymId) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        <h1 className="text-xl font-bold">
-          No gym assigned. Please contact admin.
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="glass-card p-6">
+          <h1 className="text-lg font-bold">No gym assigned. Contact admin.</h1>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen px-5 py-6 space-y-10 max-w-5xl mx-auto">
+      {/* ======================
+          HERO
+      ====================== */}
+      <div className="space-y-1">
+        <h1 className="text-3xl font-extrabold">
+          {role === "admin" ? "Admin Dashboard 👑" : "Manager Dashboard 🧑‍💼"}
         </h1>
-      </div>
-    );
-  }
-
-  // 👑 ADMIN DASHBOARD
-  if (role === "admin") {
-    return (
-      <div className="p-8 text-white space-y-6">
-        <h1 className="text-3xl font-bold">Admin Dashboard 👑</h1>
-
-        <p className="text-white/70">You are the gym owner</p>
-
-        <p className="text-white/70">
-          Gym ID: <b>{gymId}</b>
+        <p className="text-muted">
+          Welcome back{name ? `, ${name}` : ""}. This is your control center.
         </p>
+      </div>
 
-        <div className="flex gap-4 mt-6">
-          <Link
-            href="/manager"
-            className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
-          >
-            Open Manager
-          </Link>
+      {/* ======================
+          IDENTITY CARD
+      ====================== */}
+      <div className="glass-card p-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-muted">Role</p>
+            <p className="font-semibold text-lg">
+              {role === "admin" ? "Gym Owner" : "Manager"}
+            </p>
+          </div>
 
-          <Link
-            href="/owner/sales"
-            className="rounded-lg bg-purple-600 px-6 py-3 font-semibold text-white hover:bg-purple-700 transition"
-          >
-            Open Sales
-          </Link>
+          <span className="text-xs px-3 py-1 rounded-full bg-white/10">
+            Live
+          </span>
         </div>
 
-        <LogoutButton />
+        <div>
+          <p className="text-muted">Gym ID</p>
+          <p className="font-mono text-sm break-all opacity-80">{gymId}</p>
+        </div>
       </div>
-    );
-  }
 
-  // 🧑‍💼 MANAGER DASHBOARD
-  if (role === "manager") {
-    return (
-      <div className="p-8 text-white space-y-6">
-        <h1 className="text-3xl font-bold">Manager Dashboard 🧑‍💼</h1>
-
-        <p className="text-white/70">You manage daily gym operations</p>
-
-        <p className="text-white/70">
-          Gym ID: <b>{gymId}</b>
+      {/* ======================
+          QUICK ACTIONS
+      ====================== */}
+      <div className="space-y-3">
+        <p className="text-xs uppercase tracking-wider text-muted">
+          Quick Actions
         </p>
 
-        <div className="flex gap-4 mt-6">
-          <Link
-            href="/manager"
-            className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700 transition"
-          >
-            Go to Manager Panel
-          </Link>
-        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {role === "admin" && (
+            <>
+              <Link
+                href="/manager"
+                className="glass-card glass-blue p-5 flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-semibold text-lg">Manager Panel</p>
+                  <p className="text-muted text-sm">
+                    Members, plans, enquiries
+                  </p>
+                </div>
+                <span className="text-2xl">🏋️</span>
+              </Link>
 
+              <Link
+                href="/owner/sales"
+                className="glass-card glass-purple p-5 flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-semibold text-lg">Sales & Profit</p>
+                  <p className="text-muted text-sm">
+                    Revenue, expenses, history
+                  </p>
+                </div>
+                <span className="text-2xl">💰</span>
+              </Link>
+            </>
+          )}
+
+          {role === "manager" && (
+            <Link
+              href="/manager"
+              className="glass-card glass-blue p-5 flex items-center justify-between"
+            >
+              <div>
+                <p className="font-semibold text-lg">Go to Manager Panel</p>
+                <p className="text-muted text-sm">Daily gym operations</p>
+              </div>
+              <span className="text-2xl">📋</span>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* ======================
+          LOGOUT
+      ====================== */}
+      <div className="pt-4">
         <LogoutButton />
       </div>
-    );
-  }
-
-  // 🚨 FALLBACK (SHOULD NEVER HIT)
-  redirect("/login");
+    </div>
+  );
 }

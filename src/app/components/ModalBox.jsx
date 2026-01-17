@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 
 export default function ModalBox({ title, onClose, children }) {
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center mt-[230px]">
       <div className="relative w-full max-w-3xl bg-zinc-900 rounded-2xl p-6 border border-white/10">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">

@@ -237,19 +237,17 @@ export default function ManagerClient() {
   const [loading, setLoading] = useState(true);
   const [showAssignPlan, setShowAssignPlan] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
-  const [stats, setStats] = useState(null);
+  const [search, setSearch] = useState("");
 
-  // const fetchStats = async () => {
-  //   const res = await fetch("/api/manager/stats?gymId=1");
-  //   const data = await res.json();
-  //   setStats(data);
-  // };
+  /* ---------------- FETCH MEMBERSHIPS ---------------- */
 
   const fetchMembershipForUser = async (userId) => {
     const res = await fetch(`/api/memberships/by-user?userId=${userId}`);
     const data = await res.json();
     return data.membership || null;
   };
+
+  /* ---------------- FETCH MEMBERS ---------------- */
 
   const fetchMembers = async () => {
     try {
@@ -262,9 +260,10 @@ export default function ManagerClient() {
       const membershipMap = {};
       for (const member of membersList) {
         const membership = await fetchMembershipForUser(member._id);
-        if (membership) membershipMap[member._id] = membership;
+        if (membership) {
+          membershipMap[member._id] = membership;
+        }
       }
-
       setMemberships(membershipMap);
     } catch (err) {
       console.error("Failed to fetch members", err);
@@ -272,6 +271,8 @@ export default function ManagerClient() {
       setLoading(false);
     }
   };
+
+  /* ---------------- FETCH PLANS ---------------- */
 
   const fetchPlans = async () => {
     const res = await fetch("/api/plans?gymId=1");
@@ -282,53 +283,53 @@ export default function ManagerClient() {
   useEffect(() => {
     fetchMembers();
     fetchPlans();
-    // fetchStats();
   }, []);
 
-  if (loading) return <p className="text-white/60">Loading members...</p>;
+  /* ---------------- SEARCH FILTER ---------------- */
+
+  const filteredMembers = members.filter(
+    (member) =>
+      member.name.toLowerCase().includes(search.toLowerCase()) ||
+      member.memberId?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  /* ---------------- HELPERS ---------------- */
 
   function getRemainingDays(endDate) {
-    const diff =
-      Math.ceil((new Date(endDate) - new Date()) / (1000 * 60 * 60 * 24)) || 0;
+    const diff = Math.ceil(
+      (new Date(endDate) - new Date()) / (1000 * 60 * 60 * 24)
+    );
     return diff > 0 ? diff : 0;
   }
 
+  if (loading) return <p className="text-white/60">Loading members...</p>;
+
   return (
     <>
-      {/* 📊 STATS */}
-      {/* {stats && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-          {[
-            ["Total Members", stats.totalMembers],
-            ["Total Plans", stats.totalPlans],
-            ["Members Today", stats.membersToday],
-            ["This Month", stats.membersThisMonth],
-          ].map(([label, value]) => (
-            <div
-              key={label}
-              className="rounded-2xl bg-white/5 border border-white/10 p-4"
-            >
-              <p className="text-xs text-white/60">{label}</p>
-              <p className="text-2xl font-bold mt-1">{value}</p>
-            </div>
-          ))}
-
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-4 sm:col-span-2">
-            <p className="text-xs text-white/60">This Year</p>
-            <p className="text-2xl font-bold mt-1">{stats.membersThisYear}</p>
-          </div>
-        </div>
-      )} */}
-
       {/* ➕ ADD MEMBER */}
       <div className="mb-6">
         <AddMemberButton onClick={() => setShowForm(true)} />
         {showForm && <AddMemberForm onClose={() => setShowForm(false)} />}
       </div>
 
-      {/* 👥 MEMBERS */}
+      {/* 🔍 SEARCH BAR */}
+      <input
+        type="text"
+        placeholder="Search by name or member ID..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="
+          w-full mb-4 px-4 py-2
+          rounded-xl bg-black
+          border border-white/20
+          text-white placeholder-white/40
+          focus:outline-none focus:border-orange-500
+        "
+      />
+
+      {/* 👥 MEMBERS LIST */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {members.map((member) => {
+        {filteredMembers.map((member) => {
           const membership = memberships[member._id];
 
           return (
@@ -339,6 +340,9 @@ export default function ManagerClient() {
               <div>
                 <p className="text-lg font-semibold">{member.name}</p>
                 <p className="text-sm text-white/60">{member.phone}</p>
+                <p className="text-xs text-white/40">
+                  Member ID: {member.memberId || "—"}
+                </p>
               </div>
 
               <div className="text-sm text-white/70 flex flex-wrap gap-x-4">
@@ -360,7 +364,7 @@ export default function ManagerClient() {
                   </p>
 
                   <button
-                    className="mt-2 w-full py-2 rounded-xl bg-orange-500 text-black font-semibold"
+                    className="mt-2 w-full py-2 rounded-xl bg-orange-500 text-white font-semibold"
                     onClick={() => {
                       setSelectedMember(member);
                       setShowAssignPlan(true);

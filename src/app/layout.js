@@ -1,7 +1,8 @@
-
 import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "./providers";
+import ToastProvider from "./components/ToastProvider";
+import ThemeProvider from "./components/ThemeProvider";
 
 const satoshi = localFont({
   src: [
@@ -34,11 +35,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${satoshi.variable} antialiased`}>
-        <Providers>
-        {children}
-        </Providers>
-        </body>
+      <body
+        className={`${satoshi.variable} antialiased bg-white text-black
+          dark:bg-black dark:text-white
+          transition-colors duration-300`}
+      >
+        <ThemeProvider>
+          <Providers>
+            <ToastProvider>{children}</ToastProvider>
+          </Providers>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

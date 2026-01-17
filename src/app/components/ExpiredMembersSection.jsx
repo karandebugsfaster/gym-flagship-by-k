@@ -100,6 +100,9 @@ export default function ExpiredMembersSection({ gymId, plans }) {
   const [loading, setLoading] = useState(true);
   const [selectedMember, setSelectedMember] = useState(null);
 
+  // 🔍 SEARCH STATE (NEW)
+  const [search, setSearch] = useState("");
+
   async function fetchExpired() {
     const res = await fetch(`/api/memberships/expired?gymId=${gymId}`);
     const data = await res.json();
@@ -113,18 +116,58 @@ export default function ExpiredMembersSection({ gymId, plans }) {
 
   if (loading) return <p className="text-white/60">Loading expired members…</p>;
 
-  if (expired.length === 0)
+  /* ---------------- SEARCH FILTER (IMPORTANT) ---------------- */
+
+  const filteredExpired = expired.filter(
+    (m) =>
+      m.userId.name.toLowerCase().includes(search.toLowerCase()) ||
+      m.userId.phone.includes(search)
+  );
+
+  if (filteredExpired.length === 0)
     return (
-      <div className="rounded-2xl bg-green-500/10 border border-green-500/30 p-4 text-green-400">
-        🎉 No expired members. Gym is healthy!
-      </div>
+      <>
+        {/* 🔍 SEARCH BAR */}
+        <input
+          type="text"
+          placeholder="Search by name or phone…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="
+            w-full mb-4 px-4 py-2
+            rounded-xl bg-black
+            border border-white/20
+            text-white placeholder-white/40
+            focus:outline-none focus:border-orange-500
+          "
+        />
+
+        <div className="rounded-2xl bg-green-500/10 border border-green-500/30 p-4 text-green-400">
+          🎉 No expired members match your search
+        </div>
+      </>
     );
 
   return (
     <>
-      {/* EXPIRED GRID */}
+      {/* 🔍 SEARCH BAR */}
+      <input
+        type="text"
+        placeholder="Search by name or phone…"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="
+          w-full mb-4 px-4 py-2
+          rounded-xl bg-black
+          border border-white/20
+          text-white placeholder-white/40
+          focus:outline-none focus:border-orange-500
+        "
+      />
+
+      {/* ❌ EXPIRED MEMBERS GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {expired.map((m) => {
+        {filteredExpired.map((m) => {
           const daysExpired = Math.floor(
             (new Date() - new Date(m.endDate)) / (1000 * 60 * 60 * 24)
           );
@@ -163,7 +206,7 @@ export default function ExpiredMembersSection({ gymId, plans }) {
               <div className="grid grid-cols-1 gap-2 pt-2">
                 <button
                   onClick={() => setSelectedMember(m.userId)}
-                  className="w-full py-2 rounded-xl bg-orange-500 text-black font-bold"
+                  className="w-full py-2 rounded-xl bg-orange-500 text-white font-bold"
                 >
                   Renew Plan
                 </button>
@@ -193,7 +236,7 @@ export default function ExpiredMembersSection({ gymId, plans }) {
         })}
       </div>
 
-      {/* ASSIGN PLAN MODAL */}
+      {/* 🔁 ASSIGN PLAN MODAL */}
       {selectedMember && (
         <AssignPlanModal
           member={selectedMember}

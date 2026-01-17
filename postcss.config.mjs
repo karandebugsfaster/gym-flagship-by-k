@@ -5,3 +5,8 @@ const config = {
 };
 
 export default config;
+// import tailwindcss from "@tailwindcss/postcss";
+
+// export default {
+//   plugins: [tailwindcss],
+// };
