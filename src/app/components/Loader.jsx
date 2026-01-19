@@ -5,7 +5,7 @@ import { fadeDown, fadeUp, fadeLeft, fadeRight } from "./animations";
 const Loader = ({ onFinish }) => {
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-black"
+      className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-black text-white"
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
       transition={{ duration: 0.8, delay: 2.4 }}
@@ -52,14 +52,14 @@ const Loader = ({ onFinish }) => {
           LOADING
         </motion.div>
 
-        <motion.p
+        <motion.div
           variants={fadeDown}
           initial="hidden"
           animate="show"
-          className="mt-3 text-xs text-white/50 tracking-widest"
+          className="mt-3 text-xs tracking-widest text-white"
         >
           PREPARING EXPERIENCE 🚀
-        </motion.p>
+        </motion.div>
       </motion.div>
     </motion.div>
   );

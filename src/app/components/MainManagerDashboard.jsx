@@ -73,6 +73,7 @@
 
 import { useEffect, useState } from "react";
 import StatsSkeleton from "./StatsSkeleton";
+import CountUpNumber from "./CountUpNumber";
 
 export default function MainManagerDashboard() {
   const [stats, setStats] = useState(null);
@@ -97,52 +98,64 @@ export default function MainManagerDashboard() {
   if (loading) return <StatsSkeleton />;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-      {/* TOTAL MEMBERS */}
-      <div className="rounded-2xl bg-white/10 p-5 border border-white/10">
-        <p className="text-sm text-white/60">Total Members</p>
-        <p className="text-3xl font-extrabold mt-1">{stats.totalMembers}</p>
+    <div className="space-y-3">
+      {/* SECTION TITLE */}
+      <div className="px-1">
+        <p className="text-sm text-white/60">Gym Overview</p>
       </div>
 
-      {/* TOTAL PLANS */}
-      <div className="rounded-2xl bg-white/10 p-5 border border-white/10">
-        <p className="text-sm text-white/60">Total Plans</p>
-        <p className="text-3xl font-extrabold mt-1">{stats.totalPlans}</p>
-      </div>
+      {/* HORIZONTAL SCROLL STATS */}
+      <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2">
+        {/* TOTAL MEMBERS */}
+        <StatCard title="Total Members" value={stats.totalMembers} />
 
-      {/* TODAY */}
-      <div className="rounded-2xl bg-white/10 p-5 border border-white/10">
-        <p className="text-sm text-white/60">Members Added Today</p>
-        <p className="text-2xl font-bold mt-1">{stats.membersToday}</p>
-      </div>
+        {/* TOTAL PLANS */}
+        <StatCard title="Total Plans" value={stats.totalPlans} />
 
-      {/* THIS MONTH */}
-      <div className="rounded-2xl bg-white/10 p-5 border border-white/10">
-        <p className="text-sm text-white/60">This Month</p>
-        <p className="text-2xl font-bold mt-1">{stats.membersThisMonth}</p>
-      </div>
+        {/* MEMBERS TODAY */}
+        <StatCard title="Added Today" value={stats.membersToday} />
 
-      {/* EXPIRED */}
-      <div className="rounded-2xl bg-red-500/15 p-5 border border-red-500/30">
-        <p className="text-sm text-red-300">Expired Members</p>
-        <p className="text-3xl font-extrabold text-red-400 mt-1">
-          {stats.expiredMembers}
-        </p>
-      </div>
+        {/* THIS MONTH */}
+        <StatCard title="This Month" value={stats.membersThisMonth} />
 
-      {/* ENQUIRIES */}
-      <div className="rounded-2xl bg-green-500/15 p-5 border border-green-500/30 sm:col-span-2">
-        <p className="text-sm text-green-400">📞 Enquiries handled today</p>
-        <p className="text-3xl font-extrabold text-green-400 mt-1">
-          {stats.enquiriesHandledToday}
-        </p>
-      </div>
+        {/* EXPIRED */}
+        <div className="text-red-400">
 
-      {/* YEAR */}
-      <div className="rounded-2xl bg-white/10 p-5 border border-white/10 sm:col-span-2">
-        <p className="text-sm text-white/60">This Year</p>
-        <p className="text-2xl font-bold mt-1">{stats.membersThisYear}</p>
+        <StatCard title="Expired" value={stats.expiredMembers}  color="red" />
+        </div>
+
+        {/* ENQUIRIES */}
+        <StatCard
+          title="Enquiries Today"
+          value={stats.enquiriesHandledToday}
+          color="green"
+        />
+
+        {/* THIS YEAR */}
+        <StatCard title="This Year" value={stats.membersThisYear} />
       </div>
+    </div>
+  );
+}
+
+/* ----------------------------------
+   SINGLE STAT CARD (INTERNAL)
+---------------------------------- */
+function StatCard({ title, value, color }) {
+  const colorClass =
+    color === "red" ? "glass-red" : color === "green" ? "glass-green" : "";
+
+  return (
+    <div
+      className={`glass-card glass-border ${colorClass}
+      min-w-[220px] max-w-[220px]
+      p-5 flex flex-col justify-between`}
+    >
+      <p className="text-sm text-white/60">{title}</p>
+
+      <p className="stat-number mt-2">
+        <CountUpNumber value={value} />
+      </p>
     </div>
   );
 }

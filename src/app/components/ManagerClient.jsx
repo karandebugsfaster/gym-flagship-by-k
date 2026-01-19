@@ -285,19 +285,30 @@ export default function ManagerClient() {
     fetchPlans();
   }, []);
 
+  // /* ---------------- SEARCH FILTER ---------------- */
+
+  // const filteredMembers = members.filter(
+  //   (member) =>
+  //     member.name.toLowerCase().includes(search.toLowerCase()) ||
+  //     member.memberId?.toLowerCase().includes(search.toLowerCase())
+  // );
   /* ---------------- SEARCH FILTER ---------------- */
 
-  const filteredMembers = members.filter(
-    (member) =>
-      member.name.toLowerCase().includes(search.toLowerCase()) ||
-      member.memberId?.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredMembers = members.filter((member) => {
+    const query = search.toLowerCase();
+
+    return (
+      member.name?.toLowerCase().includes(query) ||
+      member.memberId?.toLowerCase().includes(query) ||
+      member.phone?.toLowerCase().includes(query)
+    );
+  });
 
   /* ---------------- HELPERS ---------------- */
 
   function getRemainingDays(endDate) {
     const diff = Math.ceil(
-      (new Date(endDate) - new Date()) / (1000 * 60 * 60 * 24)
+      (new Date(endDate) - new Date()) / (1000 * 60 * 60 * 24),
     );
     return diff > 0 ? diff : 0;
   }
@@ -315,7 +326,7 @@ export default function ManagerClient() {
       {/* 🔍 SEARCH BAR */}
       <input
         type="text"
-        placeholder="Search by name or member ID..."
+        placeholder="Search by name or member ID or Phone..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="

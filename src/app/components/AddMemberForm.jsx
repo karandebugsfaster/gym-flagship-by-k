@@ -150,40 +150,50 @@
 
 import { useState } from "react";
 
-export default function AssignPlanModal({ member, plans, onClose, onSuccess }) {
-  const [selectedPlanId, setSelectedPlanId] = useState("");
+export default function AddMemberForm({ onClose }) {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("male");
+  const [batch, setBatch] = useState("morning");
+  const [gymId, setGymId] = useState("");
+  const [memberId, setMemberId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleAssign = async () => {
-    if (!selectedPlanId) {
-      setError("Please select a plan");
+  const handleSave = async () => {
+    setError("");
+
+    if (!name || !phone || !gymId || !memberId) {
+      setError("Please fill all required fields");
       return;
     }
 
     try {
       setLoading(true);
 
-      const res = await fetch("/api/memberships/create", {
+      const res = await fetch("/api/members/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: member._id,
-          planId: selectedPlanId,
-          gymId: "1",
+          name,
+          phone,
+          gender,
+          batch,
+          gymId,
+          memberId,
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Failed to assign plan");
+        setError(data.message || "Failed to add member");
         return;
       }
 
-      onSuccess?.();
       onClose();
     } catch (err) {
+      console.error(err);
       setError("Something went wrong");
     } finally {
       setLoading(false);
@@ -191,40 +201,102 @@ export default function AssignPlanModal({ member, plans, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex justify-center items-end z-50">
-      <div className="bg-black w-full rounded-t-3xl p-6">
-        <h2 className="text-lg font-semibold mb-4">
-          Assign Plan to {member.name}
-        </h2>
+    <div className="glass-card glass-border p-5 space-y-5">
+      {/* HEADER */}
+      <div>
+        <h2 className="text-lg font-bold">Add Member</h2>
+        <p className="text-muted">Enter member details carefully</p>
+      </div>
 
-        {error && <p className="text-red-500 mb-3">{error}</p>}
+      {/* ERROR */}
+      {error && <p className="text-sm text-red-400 text-center">{error}</p>}
 
-        <select
-          value={selectedPlanId}
-          onChange={(e) => setSelectedPlanId(e.target.value)}
-          className="w-full border p-3 rounded mb-4"
-        >
-          <option value="" className="bg-black">
-            Select Plan
-          </option>
-          {plans.map((plan) => (
-            <option key={plan._id} value={plan._id} className="bg-black">
-              {plan.name} – ₹{plan.price}
-            </option>
+      {/* INPUTS */}
+      <div className="space-y-3">
+        <input
+          placeholder="Member Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full rounded-lg px-3 py-2 bg-transparent border border-white/15 outline-none"
+        />
+
+        <input
+          placeholder="Phone Number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className="w-full rounded-lg px-3 py-2 bg-transparent border border-white/15 outline-none"
+        />
+
+        <input
+          placeholder="Gym ID"
+          value={gymId}
+          onChange={(e) => setGymId(e.target.value)}
+          className="w-full rounded-lg px-3 py-2 bg-transparent border border-white/15 outline-none"
+        />
+
+        <input
+          placeholder="Member ID"
+          value={memberId}
+          onChange={(e) => setMemberId(e.target.value)}
+          className="w-full rounded-lg px-3 py-2 bg-transparent border border-white/15 outline-none"
+        />
+      </div>
+
+      {/* GENDER */}
+      <div className="space-y-2">
+        <p className="text-sm text-muted">Gender</p>
+        <div className="grid grid-cols-2 gap-3">
+          {["male", "female"].map((g) => (
+            <button
+              key={g}
+              type="button"
+              onClick={() => setGender(g)}
+              className={`py-2 rounded-lg border text-sm font-medium ${
+                gender === g
+                  ? "border-orange-400 text-orange-400"
+                  : "border-white/15 text-white/70"
+              }`}
+            >
+              {g}
+            </button>
           ))}
-        </select>
+        </div>
+      </div>
 
+      {/* BATCH */}
+      <div className="space-y-2">
+        <p className="text-sm text-muted">Batch</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {["morning", "noon", "evening", "night"].map((b) => (
+            <button
+              key={b}
+              type="button"
+              onClick={() => setBatch(b)}
+              className={`py-2 rounded-lg border text-sm font-medium ${
+                batch === b
+                  ? "border-orange-400 text-orange-400"
+                  : "border-white/15 text-white/70"
+              }`}
+            >
+              {b}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ACTIONS */}
+      <div className="grid grid-cols-2 gap-3 pt-2">
         <button
-          onClick={handleAssign}
+          onClick={handleSave}
           disabled={loading}
-          className="w-full bg-zinc-800 text-white p-3 rounded-xl"
+          className="py-2 rounded-lg bg-green-500 text-black font-semibold disabled:opacity-60"
         >
-          {loading ? "Assigning..." : "Assign Plan"}
+          {loading ? "Saving..." : "Proceed"}
         </button>
 
         <button
           onClick={onClose}
-          className="w-full mt-2 text-center text-gray-500"
+          className="py-2 rounded-lg border border-white/20 text-white/70"
         >
           Cancel
         </button>

@@ -217,3 +217,115 @@ export default async function DashboardPage() {
     </div>
   );
 }
+// import { getServerSession } from "next-auth";
+// import { redirect } from "next/navigation";
+// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+// import LogoutButton from "../components/LogoutButton";
+// import Link from "next/link";
+
+// export default async function DashboardPage() {
+//   const session = await getServerSession(authOptions);
+//   if (!session) redirect("/login");
+
+//   const { role, gymId, name } = session.user;
+//   if (role === "user") redirect("/member");
+
+//   if (!gymId) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center bg-gray-50">
+//         <div className="bg-white p-6 rounded-2xl shadow">
+//           <h1 className="font-semibold">No gym assigned</h1>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 px-4 py-5 space-y-6 max-w-md mx-auto">
+//       {/* ================= HEADER ================= */}
+//       <div className="text-center space-y-1">
+//         <h1 className="text-xl font-bold">
+//           {role === "admin" ? "Gym Owner" : "Manager"}
+//         </h1>
+//         <p className="text-xs text-gray-500">{name} · Control Center</p>
+//       </div>
+
+//       {/* ================= TODAY CARD ================= */}
+//       <div className="bg-white rounded-2xl shadow-sm p-4 flex items-center justify-between">
+//         <div>
+//           <p className="text-sm font-semibold text-purple-500">⚡ Today</p>
+//           <p className="text-2xl font-bold mt-1">0</p>
+//         </div>
+
+//         <div className="text-sm text-gray-500 space-y-1">
+//           <p>Online → 0</p>
+//           <p>Cash → 0</p>
+//         </div>
+//       </div>
+
+//       {/* ================= QUICK STATS ================= */}
+//       <div className="grid grid-cols-2 gap-4 text-sm">
+//         {["Admission", "Renewal", "Enquiry", "Due Paid"].map((label) => (
+//           <div
+//             key={label}
+//             className="bg-white rounded-xl p-4 flex items-center justify-between shadow-sm"
+//           >
+//             <div>
+//               <p className="font-medium">{label}</p>
+//               <p className="text-xs text-gray-400">Today</p>
+//             </div>
+//             <p className="text-lg font-bold text-purple-500">0</p>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* ================= STATUS CARDS ================= */}
+//       <div className="grid grid-cols-3 gap-3 text-center">
+//         <StatusCard label="Due Members" color="purple" />
+//         <StatusCard label="Expiring Today" color="green" />
+//         <StatusCard label="Attendance" color="blue" />
+//       </div>
+
+//       {/* ================= ACTION BUTTONS ================= */}
+//       <div className="grid grid-cols-2 gap-4">
+//         <Link
+//           href="/manager"
+//           className="bg-purple-100 text-purple-700 rounded-xl py-3 text-center font-semibold"
+//         >
+//           Open Manager
+//         </Link>
+
+//         {role === "admin" && (
+//           <Link
+//             href="/owner/sales"
+//             className="bg-purple-100 text-purple-700 rounded-xl py-3 text-center font-semibold"
+//           >
+//             Open Finance
+//           </Link>
+//         )}
+//       </div>
+
+//       {/* ================= LOGOUT ================= */}
+//       <div className="pt-2">
+//         <LogoutButton />
+//       </div>
+//     </div>
+//   );
+// }
+
+// /* ================= COMPONENT ================= */
+
+// function StatusCard({ label, color }) {
+//   const colors = {
+//     purple: "bg-purple-50 text-purple-700",
+//     green: "bg-green-50 text-green-700",
+//     blue: "bg-blue-50 text-blue-700",
+//   };
+
+//   return (
+//     <div className={`rounded-2xl p-4 ${colors[color]}`}>
+//       <p className="text-xl font-bold">0</p>
+//       <p className="text-xs mt-1">{label}</p>
+//     </div>
+//   );
+// }
