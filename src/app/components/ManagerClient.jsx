@@ -257,13 +257,26 @@ export default function ManagerClient() {
 
       setMembers(membersList);
 
-      const membershipMap = {};
-      for (const member of membersList) {
+      // const membershipMap = {};
+      // for (const member of membersList) {
+      //   const membership = await fetchMembershipForUser(member._id);
+      //   if (membership) {
+      //     membershipMap[member._id] = membership;
+      //   }
+      // }
+      // setMemberships(membershipMap);
+      const promises = membersList.map(async (member) => {
         const membership = await fetchMembershipForUser(member._id);
-        if (membership) {
-          membershipMap[member._id] = membership;
-        }
-      }
+        return { userId: member._id, membership };
+      });
+
+      const results = await Promise.all(promises);
+
+      const membershipMap = {};
+      results.forEach(({ userId, membership }) => {
+        if (membership) membershipMap[userId] = membership;
+      });
+
       setMemberships(membershipMap);
     } catch (err) {
       console.error("Failed to fetch members", err);
@@ -285,13 +298,6 @@ export default function ManagerClient() {
     fetchPlans();
   }, []);
 
-  // /* ---------------- SEARCH FILTER ---------------- */
-
-  // const filteredMembers = members.filter(
-  //   (member) =>
-  //     member.name.toLowerCase().includes(search.toLowerCase()) ||
-  //     member.memberId?.toLowerCase().includes(search.toLowerCase())
-  // );
   /* ---------------- SEARCH FILTER ---------------- */
 
   const filteredMembers = members.filter((member) => {
