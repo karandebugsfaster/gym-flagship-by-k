@@ -98,7 +98,8 @@ import AssignPlanModal from "./AssignPlanModal";
 export default function ExpiredMembersSection({ gymId, plans }) {
   const [expired, setExpired] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedMember, setSelectedMember] = useState(null);
+  const [selectedExpiredMembership, setSelectedExpiredMembership] =
+    useState(null);
 
   // 🔍 SEARCH STATE (NEW)
   const [search, setSearch] = useState("");
@@ -121,7 +122,7 @@ export default function ExpiredMembersSection({ gymId, plans }) {
   const filteredExpired = expired.filter(
     (m) =>
       m.userId.name.toLowerCase().includes(search.toLowerCase()) ||
-      m.userId.phone.includes(search)
+      m.userId.phone.includes(search),
   );
 
   if (filteredExpired.length === 0)
@@ -169,7 +170,7 @@ export default function ExpiredMembersSection({ gymId, plans }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {filteredExpired.map((m) => {
           const daysExpired = Math.floor(
-            (new Date() - new Date(m.endDate)) / (1000 * 60 * 60 * 24)
+            (new Date() - new Date(m.endDate)) / (1000 * 60 * 60 * 24),
           );
 
           return (
@@ -205,7 +206,7 @@ export default function ExpiredMembersSection({ gymId, plans }) {
               {/* ACTIONS */}
               <div className="grid grid-cols-1 gap-2 pt-2">
                 <button
-                  onClick={() => setSelectedMember(m.userId)}
+                  onClick={() => setSelectedExpiredMembership(m)}
                   className="w-full py-2 rounded-xl bg-orange-500 text-white font-bold"
                 >
                   Renew Plan
@@ -220,10 +221,10 @@ export default function ExpiredMembersSection({ gymId, plans }) {
                         `Hi ${
                           m.userId.name
                         }, your gym plan expired on ${new Date(
-                          m.endDate
-                        ).toDateString()}. Please renew to continue training 💪`
+                          m.endDate,
+                        ).toDateString()}. Please renew to continue training 💪`,
                       )}`,
-                      "_blank"
+                      "_blank",
                     )
                   }
                   className="w-full py-2 rounded-xl bg-green-600 text-white font-semibold"
@@ -237,14 +238,16 @@ export default function ExpiredMembersSection({ gymId, plans }) {
       </div>
 
       {/* 🔁 ASSIGN PLAN MODAL */}
-      {selectedMember && (
+      {selectedExpiredMembership && (
         <AssignPlanModal
-          member={selectedMember}
+          member={selectedExpiredMembership.userId}
           plans={plans}
-          onClose={() => setSelectedMember(null)}
+          onClose={() => setSelectedExpiredMembership(null)}
           onSuccess={() => {
-            setSelectedMember(null);
-            fetchExpired();
+            setExpired((prev) =>
+              prev.filter((item) => item._id !== selectedExpiredMembership._id),
+            );
+            setSelectedExpiredMembership(null);
           }}
         />
       )}

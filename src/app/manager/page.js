@@ -48,6 +48,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import Link from "next/link";
 
 import ManagerTotalMembers from "./ManagerTotalMembers";
 import AdminManagerClient from "../components/AdminManagerClient";
@@ -79,7 +80,7 @@ export default async function ManagerPage() {
               : "Manager Command Center"}
           </p>
         </div>
-              
+
         {/* 💎 MASTER KPI / ACTION BOX */}
         <div
           className="
@@ -100,7 +101,12 @@ export default async function ManagerPage() {
 
           {/* KPI ROW */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <ManagerTotalMembers />
+            <Link href="/manager/members">
+              {/* <ManagerTotalMembers /> */}
+              <button className="px-5 py-2 rounded-xl bg-blue-600 text-white">
+                Total Member
+              </button>
+            </Link>
             <ManagerPlanBox />
           </div>
 
