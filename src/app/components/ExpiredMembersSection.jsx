@@ -104,6 +104,37 @@ export default function ExpiredMembersSection({ gymId, plans }) {
   // 🔍 SEARCH STATE (NEW)
   const [search, setSearch] = useState("");
 
+  // 🗑️ DELETE STATE
+  const [deleting, setDeleting] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
+
+  // 🗑️ DELETE MEMBER FUNCTION
+  async function handleDeleteMember(memberId, membershipId) {
+    try {
+      setDeleting(memberId);
+      const res = await fetch(
+        `/api/members/delete?userId=${memberId}&membershipId=${membershipId}`,
+        { method: "DELETE" },
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(`❌ Failed to delete: ${errorData.error}`);
+        setDeleting(null);
+        return;
+      }
+
+      // Remove from state
+      setExpired((prev) => prev.filter((item) => item._id !== membershipId));
+      setDeleteConfirm(null);
+      alert("✅ Member deleted successfully!");
+    } catch (err) {
+      console.error("Delete error:", err);
+      alert("❌ Error deleting member");
+      setDeleting(null);
+    }
+  }
+
   async function fetchExpired() {
     const res = await fetch(`/api/memberships/expired?gymId=${gymId}`);
     const data = await res.json();
@@ -119,11 +150,14 @@ export default function ExpiredMembersSection({ gymId, plans }) {
 
   /* ---------------- SEARCH FILTER (IMPORTANT) ---------------- */
 
-  const filteredExpired = expired.filter(
-    (m) =>
+  const filteredExpired = expired.filter((m) => {
+    // Skip if userId is null (deleted user)
+    if (!m.userId) return false;
+    return (
       m.userId.name.toLowerCase().includes(search.toLowerCase()) ||
-      m.userId.phone.includes(search),
-  );
+      m.userId.phone.includes(search)
+    );
+  });
 
   if (filteredExpired.length === 0)
     return (
@@ -169,6 +203,9 @@ export default function ExpiredMembersSection({ gymId, plans }) {
       {/* ❌ EXPIRED MEMBERS GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {filteredExpired.map((m) => {
+          // Skip if userId is null (deleted user)
+          if (!m.userId) return null;
+
           const daysExpired = Math.floor(
             (new Date() - new Date(m.endDate)) / (1000 * 60 * 60 * 24),
           );
@@ -207,7 +244,7 @@ export default function ExpiredMembersSection({ gymId, plans }) {
               <div className="grid grid-cols-1 gap-2 pt-2">
                 <button
                   onClick={() => setSelectedExpiredMembership(m)}
-                  className="w-full py-2 rounded-xl bg-orange-500 text-white font-bold"
+                  className="w-full py-2 rounded-xl bg-orange-500 text-white font-bold hover:bg-orange-600 transition"
                 >
                   Renew Plan
                 </button>
@@ -227,10 +264,36 @@ export default function ExpiredMembersSection({ gymId, plans }) {
                       "_blank",
                     )
                   }
-                  className="w-full py-2 rounded-xl bg-green-600 text-white font-semibold"
+                  className="w-full py-2 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
                 >
                   💬 Send WhatsApp Reminder
                 </button>
+
+                {/* DELETE BUTTON */}
+                {deleteConfirm === m._id ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => handleDeleteMember(m.userId._id, m._id)}
+                      disabled={deleting === m.userId._id}
+                      className="py-2 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 transition disabled:opacity-50"
+                    >
+                      {deleting === m.userId._id ? "Deleting..." : "Confirm"}
+                    </button>
+                    <button
+                      onClick={() => setDeleteConfirm(null)}
+                      className="py-2 rounded-xl bg-gray-700 text-white font-semibold hover:bg-gray-800 transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setDeleteConfirm(m._id)}
+                    className="w-full py-2 rounded-xl bg-red-500/20 border border-red-500 text-red-400 font-semibold hover:bg-red-500/30 transition"
+                  >
+                    🗑️ Delete Member
+                  </button>
+                )}
               </div>
             </div>
           );

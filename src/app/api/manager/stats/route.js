@@ -43,7 +43,7 @@ export async function GET(req) {
     const startOfToday = new Date(
       now.getFullYear(),
       now.getMonth(),
-      now.getDate()
+      now.getDate(),
     );
 
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -69,10 +69,33 @@ export async function GET(req) {
       createdAt: { $gte: startOfYear },
     });
 
-    const expiredMembers = await Membership.countDocuments({
-      gymId,
-      $or: [{ status: "expired" }, { endDate: { $lt: now } }],
-    });
+    const expiredMembersResult = await Membership.aggregate([
+      {
+        $match: {
+          gymId,
+          $or: [{ status: "expired" }, { endDate: { $lt: now } }],
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userId",
+          foreignField: "_id",
+          as: "userDetails",
+        },
+      },
+      {
+        $match: {
+          userDetails: { $ne: [] },
+        },
+      },
+      {
+        $count: "total",
+      },
+    ]);
+
+    const expiredMembers =
+      expiredMembersResult.length > 0 ? expiredMembersResult[0].total : 0;
 
     const enquiriesHandledToday = await Enquiry.countDocuments({
       gymId,

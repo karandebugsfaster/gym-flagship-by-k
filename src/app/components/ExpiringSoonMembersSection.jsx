@@ -114,8 +114,11 @@ export default function ExpiringSoonMembersSection({ gymId }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {members.map((m) => {
+        // Skip if userId is null (deleted user)
+        if (!m.userId) return null;
+
         const daysLeft = Math.ceil(
-          (new Date(m.endDate) - new Date()) / (1000 * 60 * 60 * 24)
+          (new Date(m.endDate) - new Date()) / (1000 * 60 * 60 * 24),
         );
 
         return (
@@ -153,9 +156,9 @@ export default function ExpiringSoonMembersSection({ gymId }) {
               onClick={() =>
                 window.open(
                   `https://wa.me/91${m.userId.phone}?text=${encodeURIComponent(
-                    `Hi ${m.userId.name}, your gym plan will expire in ${daysLeft} day(s). Please renew to continue your fitness journey 💪`
+                    `Hi ${m.userId.name}, your gym plan will expire in ${daysLeft} day(s). Please renew to continue your fitness journey 💪`,
                   )}`,
-                  "_blank"
+                  "_blank",
                 )
               }
               className="w-full py-2 rounded-xl bg-green-600 text-white font-semibold"

@@ -101,13 +101,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AddMemberButton from "./AddMemberButton";
+import AddMemberForm from "./AddMemberForm";
 import MemberDetailSheet from "./MemberDetailSheet";
 
 export default function TotalMembersClient({ gymId }) {
+  const [showForm, setShowForm] = useState(false);
+  // const [plans, setPlans] = useState([]);
+  // const [memberships, setMemberships] = useState({});
+  // const [showAssignPlan, setShowAssignPlan] = useState(false);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedMember, setSelectedMember] = useState(null);
+
+  /* ---------------- FETCH MEMBERSHIPS ---------------- */
+
+  // const fetchMembershipForUser = async (userId) => {
+  //   const res = await fetch(`/api/memberships/by-user?userId=${userId}`);
+  //   const data = await res.json();
+  //   return data.membership || null;
+  // };
 
   /* ---------------- FETCH MEMBERS ---------------- */
   async function fetchMembers() {
@@ -132,92 +146,128 @@ export default function TotalMembersClient({ gymId }) {
     if (gymId) fetchMembers();
   }, [gymId]);
 
+  // /* ---------------- FETCH PLANS ---------------- */
+
+  // const fetchPlans = async () => {
+  //   const res = await fetch("/api/plans?gymId=1");
+  //   const data = await res.json();
+  //   setPlans(data.plans || []);
+  // };
+
+  // useEffect(() => {
+  //   fetchMembers();
+  //   fetchPlans();
+  // }, []);
+
   /* ---------------- SEARCH FILTER ---------------- */
-  const filteredMembers = members.filter((m) => {
-    const q = search.toLowerCase();
+
+  const filteredMembers = members.filter((member) => {
+    const query = search.toLowerCase();
+
     return (
-      m.name?.toLowerCase().includes(q) || m.memberId?.toLowerCase().includes(q)
+      member.name?.toLowerCase().includes(query) ||
+      member.memberId?.toLowerCase().includes(query) ||
+      member.phone?.toLowerCase().includes(query)
     );
   });
+
+  // /* ---------------- HELPERS ---------------- */
+
+  // function getRemainingDays(endDate) {
+  //   const diff = Math.ceil(
+  //     (new Date(endDate) - new Date()) / (1000 * 60 * 60 * 24),
+  //   );
+  //   return diff > 0 ? diff : 0;
+  // }
 
   if (loading) {
     return <p className="text-white/60 p-6">Loading members...</p>;
   }
 
   return (
-    <div className="p-4 space-y-4">
-      {/* 🔍 SEARCH */}
-      <input
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder="Search by name or member ID"
-        className="
+    <>
+      {/* ➕ ADD MEMBER */}
+      <div className="mb-6">
+        <AddMemberButton onClick={() => setShowForm(true)} />
+        {showForm && <AddMemberForm onClose={() => setShowForm(false)} />}
+      </div>
+
+      <div className="p-4 space-y-4">
+        {/* 🔍 SEARCH */}
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by name or member ID"
+          className="
           w-full px-4 py-2
           rounded-xl bg-black
           border border-white/20
           text-white placeholder-white/40
           focus:outline-none focus:border-orange-500
         "
-      />
+        />
 
-      {/* 👥 MEMBERS LIST */}
-      <div className="space-y-3">
-        {filteredMembers.map((m) => (
-          <div
-            key={m._id}
-            onClick={() => setSelectedMember(m)}
-            className="
+        {/* 👥 MEMBERS LIST */}
+        <div className="space-y-3">
+          {filteredMembers.map((m) => (
+            <div
+              key={m._id}
+              onClick={() => setSelectedMember(m)}
+              className="
       flex items-center justify-between
       p-4 rounded-2xl
       bg-zinc-900 border border-white/10
       active:scale-[0.98] transition
       cursor-pointer
     "
-          >
-            {/* LEFT */}
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-full bg-zinc-700 flex items-center justify-center">
-                👤
+            >
+              {/* LEFT */}
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-zinc-700 flex items-center justify-center">
+                  👤
+                </div>
+
+                <div>
+                  <p className="font-semibold text-white">{m.name}</p>
+                  <p className="text-xs text-white/60">
+                    🎟️ {m.memberId || "—"}
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <p className="font-semibold text-white">{m.name}</p>
-                <p className="text-xs text-white/60">🎟️ {m.memberId || "—"}</p>
+              {/* RIGHT */}
+              <div className="flex items-center gap-3">
+                <p className="text-sm font-semibold">
+                  {m.daysLeft === null ? (
+                    <span className="text-white/40">No Plan</span>
+                  ) : m.daysLeft <= 0 ? (
+                    <span className="text-red-400">Expired</span>
+                  ) : (
+                    <span className="text-green-400">{m.daysLeft} days</span>
+                  )}
+                </p>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedMember(m);
+                  }}
+                  className="text-white/60 text-xl"
+                >
+                  ⋮
+                </button>
               </div>
             </div>
-
-            {/* RIGHT */}
-            <div className="flex items-center gap-3">
-              <p className="text-sm font-semibold">
-                {m.daysLeft === null ? (
-                  <span className="text-white/40">No Plan</span>
-                ) : m.daysLeft <= 0 ? (
-                  <span className="text-red-400">Expired</span>
-                ) : (
-                  <span className="text-green-400">{m.daysLeft} days</span>
-                )}
-              </p>
-
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedMember(m);
-                }}
-                className="text-white/60 text-xl"
-              >
-                ⋮
-              </button>
-            </div>
-          </div>
-        ))}
-        {selectedMember && (
-          <MemberDetailSheet
-            member={selectedMember}
-            onClose={() => setSelectedMember(null)}
-          />
-        )}
+          ))}
+          {selectedMember && (
+            <MemberDetailSheet
+              member={selectedMember}
+              onClose={() => setSelectedMember(null)}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 // {filteredMembers.map((m) => (

@@ -7,13 +7,13 @@ import AssignPlanModal from "./AssignPlanModal";
 
 export default function ManagerClient() {
   const [showForm, setShowForm] = useState(false);
-  const [members, setMembers] = useState([]);
   const [plans, setPlans] = useState([]);
   const [memberships, setMemberships] = useState({});
-  const [loading, setLoading] = useState(true);
   const [showAssignPlan, setShowAssignPlan] = useState(false);
-  const [selectedMember, setSelectedMember] = useState(null);
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [selectedMember, setSelectedMember] = useState(null);
 
   /* ---------------- FETCH MEMBERSHIPS ---------------- */
 
@@ -32,15 +32,6 @@ export default function ManagerClient() {
       const membersList = data.members || [];
 
       setMembers(membersList);
-
-      // const membershipMap = {};
-      // for (const member of membersList) {
-      //   const membership = await fetchMembershipForUser(member._id);
-      //   if (membership) {
-      //     membershipMap[member._id] = membership;
-      //   }
-      // }
-      // setMemberships(membershipMap);
       const promises = membersList.map(async (member) => {
         const membership = await fetchMembershipForUser(member._id);
         return { userId: member._id, membership };
